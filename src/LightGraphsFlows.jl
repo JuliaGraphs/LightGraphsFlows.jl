@@ -5,6 +5,9 @@ const lg = LightGraphs
 using SimpleTraits: @traitfn, @traitimpl
 import SimpleTraits
 
+import JuMP
+using MathProgBase.SolverInterface: AbstractMathProgSolver
+
 import Base: getindex, size, transpose, ctranspose
 
 include("maximum_flow.jl")
@@ -15,6 +18,7 @@ include("push_relabel.jl")
 include("multiroute_flow.jl")
 include("kishimoto.jl")
 include("ext_multiroute_flow.jl")
+include("mincost.jl")
 
 # flow
 export
