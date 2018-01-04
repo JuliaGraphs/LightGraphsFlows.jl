@@ -23,6 +23,6 @@ include("mincost.jl")
 
 export
 maximum_flow, EdmondsKarpAlgorithm, DinicAlgorithm, BoykovKolmogorovAlgorithm, PushRelabelAlgorithm,
-multiroute_flow, KishimotoAlgorithm, ExtendedMultirouteFlowAlgorithm
+multiroute_flow, KishimotoAlgorithm, ExtendedMultirouteFlowAlgorithm, mincost_flow
 
 end

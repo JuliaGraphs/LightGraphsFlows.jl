@@ -15,7 +15,8 @@ for t in [
         "boykov_kolmogorov",
         "push_relabel",
         "maximum_flow",
-        "multiroute_flow"]
+        "multiroute_flow",
+        "mincost"]
     tp = joinpath(testdir, "$(t).jl")
     include(tp)
 end
