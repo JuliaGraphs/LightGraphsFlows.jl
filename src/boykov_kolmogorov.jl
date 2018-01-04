@@ -17,9 +17,9 @@ Min-Cut/Max-Flow Algorithms for Energy Minimization in Vision.
 function boykov_kolmogorov_impl end
 # see https://github.com/mauro3/SimpleTraits.jl/issues/47#issuecomment-327880153 for syntax
 @traitfn function boykov_kolmogorov_impl{T, U, AG<:lg.AbstractGraph{U}}(
-    residual_graph::AG::lg.IsDirected,          # the input graph
-    source::Integer,                           # the source vertex
-    target::Integer,                           # the target vertex
+    residual_graph::AG::lg.IsDirected,    # the input graph
+    source::Integer,                      # the source vertex
+    target::Integer,                      # the target vertex
     capacity_matrix::AbstractMatrix{T}    # edge flow capacities
     )
     n = lg.nv(residual_graph)
@@ -54,14 +54,14 @@ end
 
 # see https://github.com/mauro3/SimpleTraits.jl/issues/47#issuecomment-327880153 for syntax
 @traitfn function find_path!{T, AG<:lg.AbstractGraph{T}}(
-        residual_graph::AG::lg.IsDirected,            # the input graph
-        source::Integer,                       # the source vertex
-        target::Integer,                       # the target vertex
+        residual_graph::AG::lg.IsDirected, # the input graph
+        source::Integer,                   # the source vertex
+        target::Integer,                   # the target vertex
         flow_matrix::AbstractMatrix,       # the current flow matrix
         capacity_matrix::AbstractMatrix,   # edge flow capacities
-        PARENT::Vector,                     # parent table
-        TREE::Vector,                       # tree table
-        A::Vector                           # active set
+        PARENT::Vector,                    # parent table
+        TREE::Vector,                      # tree table
+        A::Vector                          # active set
     )
     tree_cap(p, q) = TREE[p] == one(T) ? capacity_matrix[p, q] - flow_matrix[p, q] :
     capacity_matrix[q, p] - flow_matrix[q, p]
@@ -107,12 +107,12 @@ end
 end
 
 function augment!(
-    path::AbstractVector,                  # path from source to target
-    flow_matrix::AbstractMatrix,       # the current flow matrix
-    capacity_matrix::AbstractMatrix,   # edge flow capacities
-    PARENT::Vector,                     # parent table
-    TREE::Vector,                       # tree table
-    O::Vector                           # orphan set
+        path::AbstractVector,               # path from source to target
+        flow_matrix::AbstractMatrix,        # the current flow matrix
+        capacity_matrix::AbstractMatrix,    # edge flow capacities
+        PARENT::Vector,                     # parent table
+        TREE::Vector,                       # tree table
+        O::Vector                           # orphan set
     )
 
     T = eltype(path)
@@ -147,14 +147,14 @@ function augment!(
 end
 
 @traitfn function adopt!{T, AG<:lg.AbstractGraph{T}}(
-        residual_graph::AG::lg.IsDirected,               # the input graph
-        source::Integer,                             # the source vertex
-        target::Integer,                             # the target vertex
-        flow_matrix::AbstractMatrix,       # the current flow matrix
-        capacity_matrix::AbstractMatrix,   # edge flow capacities
+        residual_graph::AG::lg.IsDirected,  # the input graph
+        source::Integer,                    # the source vertex
+        target::Integer,                    # the target vertex
+        flow_matrix::AbstractMatrix,        # the current flow matrix
+        capacity_matrix::AbstractMatrix,    # edge flow capacities
         PARENT::Vector,                     # parent table
         TREE::Vector,                       # tree table
-        A::Vector,                             # active set
+        A::Vector,                          # active set
         O::Vector                           # orphan set
     )
     tree_cap(p, q) = TREE[p] == 1 ? capacity_matrix[p, q] - flow_matrix[p, q] :

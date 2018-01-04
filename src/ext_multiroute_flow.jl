@@ -166,10 +166,10 @@ each edge whose capacity does not exceed `restriction`.
 function slope end
 # Function to get the slope of the restricted flow
 @traitfn function slope(
-    flow_graph::::lg.IsDirected,                   # the input graph
-    capacity_matrix::AbstractMatrix,  # edge flow capacities
-    cut::Vector,                      # cut information for vertices
-    restriction::Number                 # value of the restriction
+        flow_graph::::lg.IsDirected,      # the input graph
+        capacity_matrix::AbstractMatrix,  # edge flow capacities
+        cut::Vector,                      # cut information for vertices
+        restriction::Number               # value of the restriction
     )
     slope = 0
     for e in lg.edges(flow_graph)
@@ -198,12 +198,12 @@ Requires argument:
 - k::R<:Real                             # number of routes (slope of the line)
 """
 function intersection(
-    x1::T,          # x coordinate of point 1
-    y1::T,          # y coordinate of point 1
-    a1::Integer,        # slope passing by point 1
-    x2::T,          # x coordinate of point 2
-    y2::T,          # y coordinate of point 2
-    a2::R           # slope passing by point 2
+        x1::T,          # x coordinate of point 1
+        y1::T,          # y coordinate of point 1
+        a1::Integer,        # slope passing by point 1
+        x2::T,          # x coordinate of point 2
+        y2::T,          # y coordinate of point 2
+        a2::R           # slope passing by point 2
     ) where T<:AbstractFloat where R<:Real
 
     (a1 == a2) && return -1., -1. # result will be ignored in other intersection method
@@ -222,8 +222,8 @@ Return the intersection of a set of line segments and a line of slope `k`
 passing by the origin. Segments are defined as a triple (x, y, slope).
 """
 function intersection(
-    points::Vector{Tuple{T,T,I}},  # vector of breaking points
-    k::R                               # number of routes (slope of the line)
+        points::Vector{Tuple{T,T,I}},  # vector of breaking points
+        k::R                               # number of routes (slope of the line)
     ) where T<:AbstractFloat where I<:Integer where R<:Real
     λ = points[1][1] # Connectivity
 

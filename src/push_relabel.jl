@@ -9,10 +9,10 @@ Takes approximately ``\\mathcal{O}(|V|^{3})`` time.
 """
 function push_relabel end
 @traitfn function push_relabel{T}(
-    residual_graph::::lg.IsDirected,       # the input graph
-    source::Integer,                       # the source vertex
-    target::Integer,                       # the target vertex
-    capacity_matrix::AbstractMatrix{T}     # edge flow capacities
+        residual_graph::::lg.IsDirected,       # the input graph
+        source::Integer,                       # the source vertex
+        target::Integer,                       # the target vertex
+        capacity_matrix::AbstractMatrix{T}     # edge flow capacities
     )
 
     n = lg.nv(residual_graph)
@@ -57,10 +57,10 @@ Push inactive node `v` into queue `Q` and activates it. Requires preallocated
 """
 
 function enqueue_vertex!(
-    Q::AbstractVector,
-    v::Integer,                                # input vertex
-    active::AbstractVector{Bool},
-    excess::AbstractVector
+        Q::AbstractVector,
+        v::Integer,                   # input vertex
+        active::AbstractVector{Bool},
+        excess::AbstractVector
     )
     if !active[v] && excess[v] > 0
         active[v] = true
@@ -78,15 +78,15 @@ matrix, and `excess`, `height, `active`, and `Q` vectors.
 """
 function push_flow! end
 @traitfn function push_flow!(
-    residual_graph::::lg.IsDirected,             # the input graph
-    u::Integer,                              # input from-vertex
-    v::Integer,                              # input to-vetex
-    capacity_matrix::AbstractMatrix,
-    flow_matrix::AbstractMatrix,
-    excess::AbstractVector,
-    height::AbstractVector{Int},
-    active::AbstractVector{Bool},
-    Q::AbstractVector
+        residual_graph::::lg.IsDirected,   # the input graph
+        u::Integer,                        # input from-vertex
+        v::Integer,                        # input to-vetex
+        capacity_matrix::AbstractMatrix,
+        flow_matrix::AbstractMatrix,
+        excess::AbstractVector,
+        height::AbstractVector{Int},
+        active::AbstractVector{Bool},
+        Q::AbstractVector
     )
     flow = min(excess[u], capacity_matrix[u, v] - flow_matrix[u, v])
 
@@ -121,13 +121,13 @@ Requires arguments:
 """
 function gap! end
 @traitfn function gap!(
-    residual_graph::::lg.IsDirected,               # the input graph
-    h::Int,                                # cutoff height
-    excess::AbstractVector,
-    height::AbstractVector{Int},
-    active::AbstractVector{Bool},
-    count::AbstractVector{Int},
-    Q::AbstractVector                # FIFO queue
+        residual_graph::::lg.IsDirected,       # the input graph
+        h::Int,                                # cutoff height
+        excess::AbstractVector,
+        height::AbstractVector{Int},
+        active::AbstractVector{Bool},
+        count::AbstractVector{Int},
+        Q::AbstractVector                      # FIFO queue
     )
     n = lg.nv(residual_graph)
     for v in lg.vertices(residual_graph)
@@ -147,15 +147,15 @@ Relabel a node `v` with respect to its neighbors to produce an admissable edge.
 """
 function relabel! end
 @traitfn function relabel!(
-    residual_graph::::lg.IsDirected,                # the input graph
-    v::Integer,                                 # input vertex to be relabeled
-    capacity_matrix::AbstractMatrix,
-    flow_matrix::AbstractMatrix,
-    excess::AbstractVector,
-    height::AbstractVector{Int},
-    active::AbstractVector{Bool},
-    count::AbstractVector{Int},
-    Q::AbstractVector
+        residual_graph::::lg.IsDirected,   # the input graph
+        v::Integer,                        # input vertex to be relabeled
+        capacity_matrix::AbstractMatrix,
+        flow_matrix::AbstractMatrix,
+        excess::AbstractVector,
+        height::AbstractVector{Int},
+        active::AbstractVector{Bool},
+        count::AbstractVector{Int},
+        Q::AbstractVector
     )
     n = lg.nv(residual_graph)
     count[height[v] + 1] -= 1
@@ -179,15 +179,15 @@ vertex if the excess remains non-zero.
 """
 function discharge! end
 @traitfn function discharge!(
-    residual_graph::::lg.IsDirected,                # the input graph
-    v::Integer,                                 # vertex to be discharged
-    capacity_matrix::AbstractMatrix,
-    flow_matrix::AbstractMatrix,
-    excess::AbstractVector,
-    height::AbstractVector{Int},
-    active::AbstractVector{Bool},
-    count::AbstractVector{Int},
-    Q::AbstractVector                 # FIFO queue
+        residual_graph::::lg.IsDirected,    # the input graph
+        v::Integer,                         # vertex to be discharged
+        capacity_matrix::AbstractMatrix,
+        flow_matrix::AbstractMatrix,
+        excess::AbstractVector,
+        height::AbstractVector{Int},
+        active::AbstractVector{Bool},
+        count::AbstractVector{Int},
+        Q::AbstractVector                   # FIFO queue
     )
     for to in lg.out_neighbors(residual_graph, v)
         excess[v] == 0 && break

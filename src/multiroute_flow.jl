@@ -187,16 +187,16 @@ julia> f, F, labels = multiroute_flow(flow_graph, 1, 8, capacity_matrix, algorit
 ```
 """
 function multiroute_flow(
-    flow_graph::lg.AbstractGraph,                    # the input graph
-    source::Integer,                        # the source vertex
-    target::Integer,                        # the target vertex
-    capacity_matrix::AbstractMatrix{T} =  # edge flow capacities
-        DefaultCapacity(flow_graph);
-    flow_algorithm::AbstractFlowAlgorithm  =    # keyword argument for algorithm
-    PushRelabelAlgorithm(),
-    mrf_algorithm::AbstractMultirouteFlowAlgorithm  =    # keyword argument for algorithm
-    KishimotoAlgorithm(),
-    routes::R = 0              # keyword argument for number of routes (0 = all values)
+        flow_graph::lg.AbstractGraph,                    # the input graph
+        source::Integer,                                 # the source vertex
+        target::Integer,                                 # the target vertex
+        capacity_matrix::AbstractMatrix{T} =             # edge flow capacities
+            DefaultCapacity(flow_graph);
+        flow_algorithm::AbstractFlowAlgorithm =          # keyword argument for algorithm
+        PushRelabelAlgorithm(),
+        mrf_algorithm::AbstractMultirouteFlowAlgorithm = # keyword argument for algorithm
+        KishimotoAlgorithm(),
+        routes::R = 0                                    # keyword argument for number of routes (0 = all values)
     ) where T where R <: Real
 
     # a flow with a set of 1-disjoint paths is a classical max-flow

@@ -70,11 +70,11 @@ function residual end
 # Method for Edmonds–Karp algorithm
 
 @traitfn function maximum_flow(
-    flow_graph::::lg.IsDirected,                   # the input graph
-    source::Integer,                       # the source vertex
-    target::Integer,                       # the target vertex
-    capacity_matrix::AbstractMatrix,   # edge flow capacities
-    algorithm::EdmondsKarpAlgorithm        # keyword argument for algorithm
+        flow_graph::::lg.IsDirected,           # the input graph
+        source::Integer,                       # the source vertex
+        target::Integer,                       # the target vertex
+        capacity_matrix::AbstractMatrix,       # edge flow capacities
+        algorithm::EdmondsKarpAlgorithm        # keyword argument for algorithm
     )
     residual_graph = residual(flow_graph)
     return edmonds_karp_impl(residual_graph, source, target, capacity_matrix)

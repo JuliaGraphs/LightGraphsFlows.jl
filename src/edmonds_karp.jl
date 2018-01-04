@@ -8,10 +8,10 @@ Return the value of the maximum flow as well as the final flow matrix.
 """
 function edmonds_karp_impl end
 @traitfn function edmonds_karp_impl{T}(
-    residual_graph::::lg.IsDirected,               # the input graph
-    source::Integer,                       # the source vertex
-    target::Integer,                       # the target vertex
-    capacity_matrix::AbstractMatrix{T}    # edge flow capacities
+        residual_graph::::lg.IsDirected,               # the input graph
+        source::Integer,                       # the source vertex
+        target::Integer,                       # the target vertex
+        capacity_matrix::AbstractMatrix{T}    # edge flow capacities
     )
     n = lg.nv(residual_graph)                     # number of vertexes
     flow = 0

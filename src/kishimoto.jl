@@ -2,12 +2,12 @@
 # Kishimoto algorithm
 
 @traitfn function kishimoto(
-    flow_graph::::lg.IsDirected,                       # the input graph
-    source::Integer,                           # the source vertex
-    target::Integer,                           # the target vertex
-    capacity_matrix::AbstractMatrix,      # edge flow capacities
-    flow_algorithm::BoykovKolmogorovAlgorithm, # keyword argument for algorithm
-    routes::Int                                # keyword argument for routes
+        flow_graph::::lg.IsDirected,               # the input graph
+        source::Integer,                           # the source vertex
+        target::Integer,                           # the target vertex
+        capacity_matrix::AbstractMatrix,           # edge flow capacities
+        flow_algorithm::BoykovKolmogorovAlgorithm, # keyword argument for algorithm
+        routes::Int                                # keyword argument for routes
     )
     # Initialisation
     flow, F, labels = maximum_flow(flow_graph, source, target,
@@ -41,12 +41,12 @@ along with a multiroute cut if Boykov-Kolmogorov is used as a subroutine.
 """
 function kishimoto end
 @traitfn function kishimoto(
-    flow_graph::::lg.IsDirected,                   # the input graph
-    source::Integer,                       # the source vertex
-    target::Integer,                       # the target vertex
-    capacity_matrix::AbstractMatrix,  # edge flow capacities
-    flow_algorithm::AbstractFlowAlgorithm, # keyword argument for algorithm
-    routes::Int                            # keyword argument for routes
+        flow_graph::::lg.IsDirected,           # the input graph
+        source::Integer,                       # the source vertex
+        target::Integer,                       # the target vertex
+        capacity_matrix::AbstractMatrix,       # edge flow capacities
+        flow_algorithm::AbstractFlowAlgorithm, # keyword argument for algorithm
+        routes::Int                            # keyword argument for routes
     )
     # Initialisation
     flow, F = maximum_flow(flow_graph, source, target,

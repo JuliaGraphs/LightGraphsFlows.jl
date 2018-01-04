@@ -37,14 +37,14 @@ Like `blocking_flow`, but requires a preallocated parent vector `P`.
 """
 function blocking_flow! end
 @traitfn function blocking_flow!{T}(
-    residual_graph::::lg.IsDirected,               # the input graph
-    source::Integer,                           # the source vertex
-    target::Integer,                           # the target vertex
-    capacity_matrix::AbstractMatrix{T},   # edge flow capacities
-    flow_matrix::AbstractMatrix,       # the current flow matrix
-    P::AbstractVector{Int}                 # Parent vector to store Level Graph
+        residual_graph::::lg.IsDirected,     # the input graph
+        source::Integer,                     # the source vertex
+        target::Integer,                     # the target vertex
+        capacity_matrix::AbstractMatrix{T},  # edge flow capacities
+        flow_matrix::AbstractMatrix,         # the current flow matrix
+        P::AbstractVector{Int}               # Parent vector to store Level Graph
     )
-    n = lg.nv(residual_graph)                     # number of vertexes
+    n = lg.nv(residual_graph)                # number of vertexes
     fill!(P, -1)
     P[source] = -2
 
@@ -104,9 +104,9 @@ matrix `flow_matrix`and then backtrack from `target` to `source`,
 augmenting flow along all possible paths.
 """
 blocking_flow(
-    residual_graph::lg.AbstractGraph,               # the input graph
-    source::Integer,                       # the source vertex
-    target::Integer,                       # the target vertex
+    residual_graph::lg.AbstractGraph,  # the input graph
+    source::Integer,                   # the source vertex
+    target::Integer,                   # the target vertex
     capacity_matrix::AbstractMatrix,   # edge flow capacities
     flow_matrix::AbstractMatrix,       # the current flow matrix
     ) = blocking_flow!(
