@@ -11,8 +11,8 @@ notifications:
 git:
   depth: 99999999
 
- allow_failures:
- - julia: nightly
+allow_failures:
+  - julia: nightly
 
 ## uncomment and modify the following lines to manually install system packages
 #addons:
