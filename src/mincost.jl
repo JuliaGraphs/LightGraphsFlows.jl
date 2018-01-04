@@ -1,10 +1,10 @@
 function mincost_flow(g::lg.DiGraph, 
-		capacity::M1,
-		demand::M2,
-		cost::M3,
+		capacity::AbstractMatrix,
+		demand::AbstractMatrix,
+		cost::AbstractMatrix,
 		source::Int,
 		sink::Int,
-		solver::AbstractMathProgSolver) where {M1<:AbstractMatrix, M2<:AbstractMatrix, M3<:AbstractMatrix}
+		solver::AbstractMathProgSolver = GLPKSolverMIP())
 	m = JuMP.Model(solver = solver)
 	flow = JuMP.@variable(m, x[1:lg.nv(g),1:lg.nv(g)] >= 0.)
 	JuMP.@constraint(m,

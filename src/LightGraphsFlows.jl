@@ -7,6 +7,7 @@ import SimpleTraits
 
 import JuMP
 using MathProgBase.SolverInterface: AbstractMathProgSolver
+using GLPKMathProgInterface: GLPKSolverMIP
 
 import Base: getindex, size, transpose, ctranspose
 
@@ -20,7 +21,6 @@ include("kishimoto.jl")
 include("ext_multiroute_flow.jl")
 include("mincost.jl")
 
-# flow
 export
 maximum_flow, EdmondsKarpAlgorithm, DinicAlgorithm, BoykovKolmogorovAlgorithm, PushRelabelAlgorithm,
 multiroute_flow, KishimotoAlgorithm, ExtendedMultirouteFlowAlgorithm
