@@ -2,8 +2,8 @@ function mincost_flow(g::lg.DiGraph,
 		capacity::AbstractMatrix,
 		demand::AbstractMatrix,
 		cost::AbstractMatrix,
-		source::Int,
-		sink::Int,
+		source::Int = -1, # if source and/or sink omitted or not in nodes, circulation problem 
+		sink::Int = -1,
 		solver::AbstractMathProgSolver = GLPKSolverMIP())
 	m = JuMP.Model(solver = solver)
 	flow = JuMP.@variable(m, x[1:lg.nv(g),1:lg.nv(g)] >= 0.)

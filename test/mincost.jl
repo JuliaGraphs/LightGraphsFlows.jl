@@ -41,4 +41,42 @@
             @test flow[idx,jdx] ≈ 0.0
         end
     end
+
+    # graph without sink or source
+    g = lg.DiGraph(6)
+    # create circuit
+    for s in 1:5
+        lg.add_edge!(g, s, s+1)
+    end
+    lg.add_edge!(g, 6, 1)
+    lg.add_edge!(g, 2, 5) # shortcut
+
+    capacity = ones(6,6)
+    demand = spzeros(6,6)
+    demand[1,2] = 1
+    costs = ones(6,6)
+    flow = mincost_flow(g, capacity, demand, costs, -1, -1)
+    active_flows = [(1,2), (2,5), (5,6),(6,1)]
+    for s in 1:6
+        for t in 1:6
+            if (s,t) in active_flows
+                @test flow[s,t] ≈ 1.
+            else
+                @test flow[s,t] ≈ 0.
+            end
+        end
+    end
+    # higher short-circuit cost
+    costs[2,5] = 10.
+    flow = mincost_flow(g, capacity, demand, costs, -1, -1)
+    active_flows = [(1,2),(2,3),(3,4),(4,5),(5,6),(6,1)]
+    for s in 1:6
+        for t in 1:6
+            if (s,t) in active_flows
+                @test flow[s,t] ≈ 1.
+            else
+                @test flow[s,t] ≈ 0.
+            end
+        end
+    end
 end
