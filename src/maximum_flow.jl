@@ -83,11 +83,11 @@ end
 # Method for Dinic's algorithm
 
 @traitfn function maximum_flow(
-    flow_graph::::lg.IsDirected,                   # the input graph
-    source::Integer,                       # the source vertex
-    target::Integer,                       # the target vertex
-    capacity_matrix::AbstractMatrix,   # edge flow capacities
-    algorithm::DinicAlgorithm              # keyword argument for algorithm
+        flow_graph::::lg.IsDirected,       # the input graph
+        source::Integer,                   # the source vertex
+        target::Integer,                   # the target vertex
+        capacity_matrix::AbstractMatrix,   # edge flow capacities
+        algorithm::DinicAlgorithm          # keyword argument for algorithm
     )
     residual_graph = residual(flow_graph)
     return dinic_impl(residual_graph, source, target, capacity_matrix)
@@ -109,11 +109,11 @@ end
 # Method for Push-relabel algorithm
 
 @traitfn function maximum_flow(
-    flow_graph::::lg.IsDirected,                   # the input graph
-    source::Integer,                       # the source vertex
-    target::Integer,                       # the target vertex
-    capacity_matrix::AbstractMatrix,   # edge flow capacities
-    algorithm::PushRelabelAlgorithm        # keyword argument for algorithm
+        flow_graph::::lg.IsDirected,           # the input graph
+        source::Integer,                       # the source vertex
+        target::Integer,                       # the target vertex
+        capacity_matrix::AbstractMatrix,       # edge flow capacities
+        algorithm::PushRelabelAlgorithm        # keyword argument for algorithm
     )
     residual_graph = residual(flow_graph)
     return push_relabel(residual_graph, source, target, capacity_matrix)
@@ -164,14 +164,14 @@ julia> f, F, labels = maximum_flow(flow_graph, 1, 8, capacity_matrix, algorithm=
 ```
 """
 function maximum_flow(
-    flow_graph::lg.AbstractGraph,                   # the input graph
-    source::Integer,                       # the source vertex
-    target::Integer,                       # the target vertex
-    capacity_matrix::AbstractMatrix =  # edge flow capacities
-    DefaultCapacity(flow_graph);
-    algorithm::AbstractFlowAlgorithm  =    # keyword argument for algorithm
-    PushRelabelAlgorithm(),
-    restriction::Real = 0               # keyword argument for restriction max-flow
+        flow_graph::lg.AbstractGraph,          # the input graph
+        source::Integer,                       # the source vertex
+        target::Integer,                       # the target vertex
+        capacity_matrix::AbstractMatrix =      # edge flow capacities
+        DefaultCapacity(flow_graph);
+        algorithm::AbstractFlowAlgorithm  =    # keyword argument for algorithm
+        PushRelabelAlgorithm(),
+        restriction::Real = 0                  # keyword argument for restriction max-flow
     )
     if restriction > 0
         return maximum_flow(flow_graph, source, target, min.(restriction, capacity_matrix), algorithm)
