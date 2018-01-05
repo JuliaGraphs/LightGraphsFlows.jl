@@ -7,7 +7,7 @@ import SimpleTraits
 
 import JuMP
 using MathProgBase.SolverInterface: AbstractMathProgSolver
-using GLPKMathProgInterface: GLPKSolverMIP
+using GLPKMathProgInterface: GLPKSolverLP
 
 import Base: getindex, size, transpose, ctranspose
 

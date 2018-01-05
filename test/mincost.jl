@@ -33,6 +33,11 @@
     @test flow[1,3] == 0
     @test sum(diag(flow)) == 0
 
+    # flow conservation property
+    for n1 = 1:4
+        @test sum(flow[n1,:]) ≈ sum(flow[:,n1])
+    end
+
     # no demand => null flow
     d2 = spzeros(6,6)
     flow = mincost_flow(g, capacity, d2, w, 5, 6)
@@ -66,6 +71,10 @@
             end
         end
     end
+    # flow conservation property
+    for n1 = 1:6
+        @test sum(flow[n1,:]) ≈ sum(flow[:,n1])
+    end
     # higher short-circuit cost
     costs[2,5] = 10.
     flow = mincost_flow(g, capacity, demand, costs, -1, -1)
@@ -78,5 +87,9 @@
                 @test flow[s,t] ≈ 0.
             end
         end
+    end
+        # flow conservation property
+    for n1 = 1:6
+        @test sum(flow[n1,:]) ≈ sum(flow[:,n1])
     end
 end
