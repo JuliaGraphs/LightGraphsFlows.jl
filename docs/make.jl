@@ -5,4 +5,12 @@ const lg = LightGraphs
 
 makedocs(
     modules = [LightGraphsFlows],
+    format = :html,
+    sitename = "LightGraphsFlows",
+    doctest = false,
+	pages = Any[
+		"Getting started"    => "index.md",
+        "Maxflow algorithms" => "maxflow.md",
+        "Multiroute flows"   => "multiroute.md",
+    ]
 )
