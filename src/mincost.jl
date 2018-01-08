@@ -15,7 +15,7 @@ Returns a flow matrix, flow[i,j] corresponds to the flow on the (i,j) arc.
 
 ### Usage Example:
 
-```jldoctest
+```julia
 julia> g = lg.DiGraph(6) # Create a flow-graph
 julia> lg.add_edge!(g, 5, 1)
 julia> lg.add_edge!(g, 5, 2)
