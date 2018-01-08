@@ -61,7 +61,7 @@ flow in the reverse direction.
 
 If only the forward edge exists, a reverse edge is created with capacity 0.
 If both forward and reverse edges exist, their capacities are left unchanged.
-Since the capacities in [`LightGraphs.DefaultDistance`](@ref) cannot be changed, an array of ones
+Since the capacities in LightGraphs.DefaultDistance cannot be changed, an array of ones
 is created.
 """
 function residual end
@@ -135,7 +135,7 @@ algorithm, the associated mincut is returned as a third output.
 
 ### Usage Example:
 
-```jldoctest
+```julia
 julia> flow_graph = lg.DiGraph(8) # Create a flow-graph
 julia> flow_edges = [
 (1,2,10),(1,3,5),(1,4,15),(2,3,4),(2,5,9),
