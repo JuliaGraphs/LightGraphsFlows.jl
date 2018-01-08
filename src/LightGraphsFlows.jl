@@ -5,6 +5,10 @@ const lg = LightGraphs
 using SimpleTraits: @traitfn, @traitimpl
 import SimpleTraits
 
+import JuMP
+using MathProgBase.SolverInterface: AbstractMathProgSolver
+using GLPKMathProgInterface: GLPKSolverLP
+
 import Base: getindex, size, transpose, ctranspose
 
 include("maximum_flow.jl")
@@ -15,10 +19,10 @@ include("push_relabel.jl")
 include("multiroute_flow.jl")
 include("kishimoto.jl")
 include("ext_multiroute_flow.jl")
+include("mincost.jl")
 
-# flow
 export
 maximum_flow, EdmondsKarpAlgorithm, DinicAlgorithm, BoykovKolmogorovAlgorithm, PushRelabelAlgorithm,
-multiroute_flow, KishimotoAlgorithm, ExtendedMultirouteFlowAlgorithm
+multiroute_flow, KishimotoAlgorithm, ExtendedMultirouteFlowAlgorithm, mincost_flow
 
 end
