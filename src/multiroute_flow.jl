@@ -155,7 +155,7 @@ in the following cases:
 (please consult the  [`maximum_flow`](@ref) section for options about flow_algorithm
 and capacity_matrix)
 
-```jldoctest
+```julia
 julia> flow_graph = lg.DiGraph(8) # Create a flow graph
 
 julia> flow_edges = [

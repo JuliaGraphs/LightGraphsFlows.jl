@@ -135,7 +135,7 @@ algorithm, the associated mincut is returned as a third output.
 
 ### Usage Example:
 
-```jldoctest
+```julia
 julia> flow_graph = lg.DiGraph(8) # Create a flow-graph
 julia> flow_edges = [
 (1,2,10),(1,3,5),(1,4,15),(2,3,4),(2,5,9),
