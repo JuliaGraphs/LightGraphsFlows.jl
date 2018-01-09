@@ -45,47 +45,37 @@ function mincost_flow(g::lg.DiGraph,
 		source::Int = -1, # if source and/or sink omitted or not in nodes, circulation problem 
 		sink::Int = -1,
 		solver::AbstractMathProgSolver = GLPKSolverLP())
-	m = JuMP.Model(solver = solver)
-	flow = JuMP.@variable(m, x[1:lg.nv(g),1:lg.nv(g)] >= 0.)
-	JuMP.@constraint(m,
-		[i=1:lg.nv(g),j=1:lg.nv(g)],
-		flow[i,j] - demand[i,j] >= 0.
-	)
-	JuMP.@constraint(m,
-		[i=1:lg.nv(g),j=1:lg.nv(g)],
-		capacity[i,j] - flow[i,j] >= 0.
-	)
-	for n1 in 1:lg.nv(g)
-		for n2 in 1:lg.nv(g)
-			if !lg.has_edge(g,n1,n2)
-				JuMP.@constraint(m, flow[n1,n2] <= 0.)
+	flat_cap = collect(Iterators.flatten(capacity))
+	flat_dem = collect(Iterators.flatten(demand))
+	flat_cost = collect(Iterators.flatten(cost))
+	n = lg.nv(g)
+	b = zeros(n+n*n)
+	A = spzeros(n+n*n,n*n)
+	sense = ['=' for _ in 1:n]
+	append!(sense, ['>' for _ in 1:n*n])
+	for node in 1:n
+		if sink == node
+			sense[sink] = '>'
+		elseif source == node
+			sense[source] = '<'
+		end
+		col_idx = (node-1)*n+1:node*n
+		line_idx = node:n:n*n
+		for jdx in col_idx
+			A[node,jdx] = A[node,jdx]+1.0
+		end
+		for idx in line_idx
+			A[node,idx] = A[node,idx]-1.0
+		end
+	end
+	for src in 1:n
+		for dst in 1:n
+			if lg.Edge(src,dst) ∉ lg.edges(g)
+				A[n+src+n*(dst-1),src+n*(dst-1)] = 1
+				sense[n+src+n*(dst-1)] = '<'
 			end
 		end
 	end
-	# flow conservation constraints
-	for node in 1:lg.nv(g)
-		if node != source && node != sink
-			JuMP.@constraint(m,
-				sum(flow[node,j] for j in 1:lg.nv(g)) -
-				sum(flow[i,node] for i in 1:lg.nv(g)) == 0
-			)
-		end
-	end
-	# source is a net flow producer
-	if source ∈ 1:lg.nv(g)
-		JuMP.@constraint(m,
-			sum(flow[source,j] for j in 1:lg.nv(g)) -
-			sum(flow[i,source] for i in 1:lg.nv(g)) >= 0
-		)
-	end
-	# source is a net flow consumer
-	if sink ∈ 1:lg.nv(g)
-		JuMP.@constraint(m,
-			sum(flow[sink,j] for j in 1:lg.nv(g)) -
-			sum(flow[i,sink] for i in 1:lg.nv(g)) <= 0
-		)
-	end
-	JuMP.@objective(m, :Min, sum(flow[i,j]*cost[i,j] for i=1:lg.nv(g),j=1:lg.nv(g)))
-	solution = JuMP.solve(m)
-	return JuMP.getvalue(flow)
+	sol = linprog(flat_cost, A, sense, b, flat_dem, flat_cap, solver)
+	[sol.sol[idx + n*(jdx-1)] for idx=1:n,jdx=1:n]
 end
