@@ -19,7 +19,7 @@
 
     # Construct the residual graph
     for fg in (flow_graph, lg.DiGraph{UInt8}(flow_graph), lg.DiGraph{Int16}(flow_graph))
-      residual_graph = @inferred(lg.residual(fg))
+      residual_graph = @inferred(LightGraphsFlows.residual(fg))
 
       # Test with default distances
       @test @inferred(LightGraphsFlows.dinic_impl(residual_graph, 1, 8, LightGraphsFlows.DefaultCapacity(residual_graph)))[1] == 3

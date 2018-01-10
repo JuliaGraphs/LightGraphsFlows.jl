@@ -1,7 +1,6 @@
 julia 0.6
 LightGraphs
 SimpleTraits
-JuMP
 MathProgBase
 GLPK
 GLPKMathProgInterface

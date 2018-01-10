@@ -11,5 +11,6 @@ makedocs(
 		"Getting started"    => "index.md",
         "Maxflow algorithms" => "maxflow.md",
         "Multiroute flows"   => "multiroute.md",
+        "Min-cost flows"   => "mincost.md",
     ]
 )
