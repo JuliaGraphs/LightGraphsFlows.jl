@@ -7,7 +7,6 @@ import SimpleTraits
 
 using MathProgBase.HighLevelInterface: linprog
 using MathProgBase.SolverInterface: AbstractMathProgSolver
-using GLPKMathProgInterface: GLPKSolverLP
 
 import Base: getindex, size, transpose, ctranspose
 
