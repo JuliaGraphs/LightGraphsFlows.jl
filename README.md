@@ -7,12 +7,11 @@
 [![codecov.io](http://codecov.io/github/JuliaGraphs/LightGraphsFlows.jl/coverage.svg?branch=master)](http://codecov.io/github/JuliaGraphs/LightGraphsFlows.jl?branch=master)
 
 Flow algorithms on top of [LightGraphs.jl](https://github.com/JuliaGraphs/LightGraphs.jl),
-including `maximum_flow`, `multiroute_flow`. 
+including `maximum_flow`, `multiroute_flow` and `mincost_flow`. 
 See [Maximum flow problem](https://en.wikipedia.org/wiki/Maximum_flow_problem)
 for a detailed description of the problem.
 
 ## Usage
-
 
 ### Maxflow 
 

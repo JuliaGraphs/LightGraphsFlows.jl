@@ -5,8 +5,8 @@ const lg = LightGraphs
 using SimpleTraits: @traitfn, @traitimpl
 import SimpleTraits
 
-using MathProgBase.SolverInterface: AbstractMathProgSolver
 using MathProgBase.HighLevelInterface: linprog
+using MathProgBase.SolverInterface: AbstractMathProgSolver
 using GLPKMathProgInterface: GLPKSolverLP
 
 import Base: getindex, size, transpose, ctranspose
