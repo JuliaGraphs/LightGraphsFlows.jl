@@ -1,5 +1,5 @@
 """
-    mincost_flow(graph, capacity, demand, cost[, source][, sink][, solver])
+    mincost_flow(graph, capacity, demand, cost, solver, [, source][, sink])
 
 Find a flow satisfying the `demand` and `capacity` constraints for each edge
 while minimizing the `sum(cost.*flow)`.
@@ -9,7 +9,7 @@ consumption respectively. All other nodes must respect the flow conservation
 property.
 
 - The problem can be seen as a linear programming problem and uses a LP 
-solver under the hood. The default solver is GLPKSolverLP.
+solver under the hood.
 
 Returns a flow matrix, flow[i,j] corresponds to the flow on the (i,j) arc.
 
@@ -35,16 +35,16 @@ julia> demand = spzeros(6,6)
 julia> demand[3,6] = 1
 julia> demand[4,6] = 1
 julia> capacity = ones(6,6)
-julia> flow = mincost_flow(g, capacity, demand, w, 5, 6)
+julia> flow = mincost_flow(g, capacity, demand, w, GLPKSolverLP(), 5, 6)
 ```
 """
 function mincost_flow(g::lg.DiGraph, 
 		capacity::AbstractMatrix,
 		demand::AbstractMatrix,
 		cost::AbstractMatrix,
+		solver::AbstractMathProgSolver,
 		source::Int = -1, # if source and/or sink omitted or not in nodes, circulation problem 
-		sink::Int = -1,
-		solver::AbstractMathProgSolver = GLPKSolverLP())
+		sink::Int = -1)
 	flat_cap = collect(Iterators.flatten(capacity))
 	flat_dem = collect(Iterators.flatten(demand))
 	flat_cost = collect(Iterators.flatten(cost))
