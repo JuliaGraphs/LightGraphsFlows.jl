@@ -1,4 +1,4 @@
-using GLPKMathProgInterface: GLPKSolverLP
+using Clp: ClpSolver
 
 @testset "Minimum-cost flow" begin
 
@@ -24,7 +24,7 @@ using GLPKMathProgInterface: GLPKSolverLP
     demand[4,6] = 1
     capacity = ones(6,6)
 
-    flow = mincost_flow(g, capacity, demand, w, GLPKSolverLP(), 5, 6)
+    flow = mincost_flow(g, capacity, demand, w, ClpSolver(), 5, 6)
     @test flow[5,1] == 1
     @test flow[5,2] == 1
     @test flow[3,6] == 1
@@ -42,7 +42,7 @@ using GLPKMathProgInterface: GLPKSolverLP
 
     # no demand => null flow
     d2 = spzeros(6,6)
-    flow = mincost_flow(g, capacity, d2, w, GLPKSolverLP(), 5, 6)
+    flow = mincost_flow(g, capacity, d2, w, ClpSolver(), 5, 6)
     for idx in 1:6
         for jdx in 1:6
             @test flow[idx,jdx] ≈ 0.0
@@ -62,7 +62,7 @@ using GLPKMathProgInterface: GLPKSolverLP
     demand = spzeros(6,6)
     demand[1,2] = 1
     costs = ones(6,6)
-    flow = mincost_flow(g, capacity, demand, costs, GLPKSolverLP())
+    flow = mincost_flow(g, capacity, demand, costs, ClpSolver())
     active_flows = [(1,2), (2,5), (5,6),(6,1)]
     for s in 1:6
         for t in 1:6
@@ -79,7 +79,7 @@ using GLPKMathProgInterface: GLPKSolverLP
     end
     # higher short-circuit cost
     costs[2,5] = 10.
-    flow = mincost_flow(g, capacity, demand, costs, GLPKSolverLP())
+    flow = mincost_flow(g, capacity, demand, costs, ClpSolver())
     active_flows = [(1,2),(2,3),(3,4),(4,5),(5,6),(6,1)]
     for s in 1:6
         for t in 1:6

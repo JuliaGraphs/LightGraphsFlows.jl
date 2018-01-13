@@ -35,7 +35,7 @@ julia> demand = spzeros(6,6)
 julia> demand[3,6] = 1
 julia> demand[4,6] = 1
 julia> capacity = ones(6,6)
-julia> flow = mincost_flow(g, capacity, demand, w, GLPKSolverLP(), 5, 6)
+julia> flow = mincost_flow(g, capacity, demand, w, ClpSolver(), 5, 6)
 ```
 """
 function mincost_flow(g::lg.DiGraph, 
