@@ -19,9 +19,10 @@ include("multiroute_flow.jl")
 include("kishimoto.jl")
 include("ext_multiroute_flow.jl")
 include("mincost.jl")
+include("mincut.jl")
 
 export
 maximum_flow, EdmondsKarpAlgorithm, DinicAlgorithm, BoykovKolmogorovAlgorithm, PushRelabelAlgorithm,
-multiroute_flow, KishimotoAlgorithm, ExtendedMultirouteFlowAlgorithm, mincost_flow
+multiroute_flow, KishimotoAlgorithm, ExtendedMultirouteFlowAlgorithm, mincost_flow, mincut
 
 end

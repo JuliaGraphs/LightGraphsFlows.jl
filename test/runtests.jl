@@ -16,7 +16,9 @@ for t in [
         "push_relabel",
         "maximum_flow",
         "multiroute_flow",
-        "mincost"]
+        "mincost",
+        "mincut",
+        ]
     tp = joinpath(testdir, "$(t).jl")
     include(tp)
 end
