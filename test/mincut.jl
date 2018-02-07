@@ -35,5 +35,5 @@
     @test value ≈ 3.0
     @test sort(part1) == [1,3,4]
     @test sort(part2) == [2,5]    
-    
+
 end

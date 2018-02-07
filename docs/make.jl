@@ -12,5 +12,6 @@ makedocs(
         "Maxflow algorithms" => "maxflow.md",
         "Multiroute flows"   => "multiroute.md",
         "Min-cost flows"   => "mincost.md",
+        "Min-cut"   => "mincut.md",
     ]
 )
