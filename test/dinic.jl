@@ -38,7 +38,7 @@
 
           #disconnect target and add unreachable vertex
           h = copy(residual_graph)
-          for src in collect(lg.in_neighbors(residual_graph, target))
+          for src in collect(lg.inneighbors(residual_graph, target))
               lg.rem_edge!(h, src, target)
           end
           @test @inferred(LightGraphsFlows.blocking_flow(h, source, target, capacity_matrix, flow_matrix)) == 0

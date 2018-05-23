@@ -107,7 +107,7 @@ function fetch_path! end
     while true
         if length(Q_f) <= length(Q_r)
             u = pop!(Q_f)
-            for v in lg.out_neighbors(residual_graph, u)
+            for v in lg.outneighbors(residual_graph, u)
                 if capacity_matrix[u, v] - flow_matrix[u, v] > 0 && P[v] == -1
                     P[v] = u
                     if S[v] == -1
@@ -121,7 +121,7 @@ function fetch_path! end
             length(Q_f) == 0 && return 0, P, S, 1 # No paths to target
         else
             v = pop!(Q_r)
-            for u in lg.in_neighbors(residual_graph, v)
+            for u in lg.inneighbors(residual_graph, v)
                 if capacity_matrix[u, v] - flow_matrix[u, v] > 0 && S[u] == -1
                     S[u] = v
                     P[u] != -1 && return u, P, S, 0 # 0 indicates success

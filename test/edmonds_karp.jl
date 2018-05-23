@@ -46,7 +46,7 @@
             end
             v, P, S, flag = LightGraphsFlows.fetch_path(h, s, t, flow_matrix, capacity_matrix)
             @test flag == 0
-            for i in collect(lg.in_neighbors(h, t))
+            for i in collect(lg.inneighbors(h, t))
                 lg.rem_edge!(h, i, t)
             end
             v, P, S, flag = LightGraphsFlows.fetch_path(h, s, t, flow_matrix, capacity_matrix)

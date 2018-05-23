@@ -36,7 +36,7 @@ function push_relabel end
     sizehint!(Q, n)
 
 
-    for v in lg.out_neighbors(residual_graph, source)
+    for v in lg.outneighbors(residual_graph, source)
         push_flow!(residual_graph, source, v, capacity_matrix, flow_matrix, excess, height, active, Q)
     end
 
@@ -46,7 +46,7 @@ function push_relabel end
         discharge!(residual_graph, v, capacity_matrix, flow_matrix, excess, height, active, count, Q)
     end
 
-    return sum([flow_matrix[v, target] for v in lg.in_neighbors(residual_graph, target)]), flow_matrix
+    return sum([flow_matrix[v, target] for v in lg.inneighbors(residual_graph, target)]), flow_matrix
 end
 
 """
@@ -160,7 +160,7 @@ function relabel! end
     n = lg.nv(residual_graph)
     count[height[v] + 1] -= 1
     height[v] = 2 * n
-    for to in lg.out_neighbors(residual_graph, v)
+    for to in lg.outneighbors(residual_graph, v)
         if capacity_matrix[v, to] > flow_matrix[v, to]
             height[v] = min(height[v], height[to] + 1)
         end
@@ -189,7 +189,7 @@ function discharge! end
         count::AbstractVector{Int},
         Q::AbstractVector                   # FIFO queue
     )
-    for to in lg.out_neighbors(residual_graph, v)
+    for to in lg.outneighbors(residual_graph, v)
         excess[v] == 0 && break
         push_flow!(residual_graph, v, to, capacity_matrix, flow_matrix, excess, height, active, Q)
     end

@@ -39,12 +39,12 @@ julia> capacity = ones(6,6)
 julia> flow = mincost_flow(g, capacity, demand, w, ClpSolver(), 5, 6)
 ```
 """
-function mincost_flow(g::lg.DiGraph, 
+function mincost_flow(g::lg.DiGraph,
 		capacity::AbstractMatrix,
 		demand::AbstractMatrix,
 		cost::AbstractMatrix,
 		solver::AbstractMathProgSolver,
-		source::Int = -1, # if source and/or sink omitted or not in nodes, circulation problem 
+		source::Int = -1, # if source and/or sink omitted or not in nodes, circulation problem
 		sink::Int = -1)
 	flat_cap = collect(Iterators.flatten(capacity))
 	flat_dem = collect(Iterators.flatten(demand))
