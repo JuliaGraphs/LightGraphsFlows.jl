@@ -73,3 +73,33 @@ julia> f = multiroute_flow(points, 1.5, valueonly = true)
 
 julia> f, F, labels = multiroute_flow(flow_graph, 1, 8, capacity_matrix, algorithm = BoykovKolmogorovAlgorithm(), routes = 2) # Run multiroute flow algorithm using Boykov-Kolmogorov algorithm as maximum_flow routine
 ```
+
+## Mincost flow
+
+Mincost flow is solving a linear optimization problem and thus requires a LP solver
+defined by [MathProgBase.jl](http://mathprogbasejl.readthedocs.io).
+
+```julia
+using Clp: ClpSolver
+g = lg.DiGraph(6)
+lg.add_edge!(g, 5, 1)
+lg.add_edge!(g, 5, 2)
+lg.add_edge!(g, 3, 6)
+lg.add_edge!(g, 4, 6)
+lg.add_edge!(g, 1, 3)
+lg.add_edge!(g, 1, 4)
+lg.add_edge!(g, 2, 3)
+lg.add_edge!(g, 2, 4)
+w = zeros(6,6)
+w[1,3] = 10.
+w[1,4] = 5.
+w[2,3] = 2.
+w[2,4] = 2.
+# v2 -> sink have demand of one
+demand = spzeros(6,6)
+demand[3,6] = 1
+demand[4,6] = 1
+capacity = ones(6,6)
+
+flow = mincost_flow(g, capacity, demand, w, ClpSolver(), 5, 6)
+```

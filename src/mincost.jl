@@ -9,13 +9,14 @@ consumption respectively. All other nodes must respect the flow conservation
 property.
 
 - The problem can be seen as a linear programming problem and uses a LP 
-solver under the hood.
+solver under the hood. We use Clp in the examples and tests.
 
 Returns a flow matrix, flow[i,j] corresponds to the flow on the (i,j) arc.
 
 ### Usage Example:
 
 ```julia
+julia> using Clp: ClpSolver # use your favorite LP solver here
 julia> g = lg.DiGraph(6) # Create a flow-graph
 julia> lg.add_edge!(g, 5, 1)
 julia> lg.add_edge!(g, 5, 2)
