@@ -32,3 +32,6 @@ after_success:
   - julia -e 'cd(Pkg.dir("LightGraphsFlows")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
   # push coverage results to Codecov
   - julia -e 'cd(Pkg.dir("LightGraphsFlows")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  # Build documentation
+  - julia -e 'Pkg.add("Documenter")'
+  - julia -e 'cd(Pkg.dir("LightGraphsFlows")); include(joinpath("docs", "make.jl"))'

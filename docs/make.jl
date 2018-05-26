@@ -15,3 +15,8 @@ makedocs(
         "Min-cut"   => "mincut.md",
     ]
 )
+
+deploydocs(
+    repo = "github.com/JuliaGraphs/LightGraphsFlows.jl.git",
+    julia = "0.6"
+)
