@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Min-cost flows · LightGraphsFlows</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link href="assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>LightGraphsFlows</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="search.html"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="index.html">Getting started</a></li><li><a class="toctext" href="maxflow.html">Maxflow algorithms</a></li><li><a class="toctext" href="multiroute.html">Multiroute flows</a></li><li class="current"><a class="toctext" href="mincost.html">Min-cost flows</a><ul class="internal"><li><a class="toctext" href="#Min-cost-flow-1">Min-cost flow</a></li></ul></li><li><a class="toctext" href="mincut.html">Min-cut</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href="mincost.html">Min-cost flows</a></li></ul><a class="edit-page" href="https://github.com/JuliaGraphs/LightGraphsFlows.jl/blob/master/docs/src/mincost.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Min-cost flows</span><a class="fa fa-bars" href="#"></a></div></header><h2><a class="nav-anchor" id="Min-cost-flow-1" href="#Min-cost-flow-1">Min-cost flow</a></h2><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="LightGraphsFlows.mincost_flow" href="#LightGraphsFlows.mincost_flow"><code>LightGraphsFlows.mincost_flow</code></a> — <span class="docstring-category">Function</span>.</div><div><pre><code class="language-none">mincost_flow(graph, capacity, demand, cost, solver, [, source][, sink])</code></pre><p>Find a flow satisfying the <code>demand</code> and <code>capacity</code> constraints for each edge while minimizing the <code>sum(cost.*flow)</code>.</p><ul><li><p>If <code>source</code> and <code>sink</code> are specified, they are allowed a net flow production,</p></li></ul><p>consumption respectively. All other nodes must respect the flow conservation property.</p><ul><li><p>The problem can be seen as a linear programming problem and uses a LP </p></li></ul><p>solver under the hood. We use Clp in the examples and tests.</p><p>Returns a flow matrix, flow[i,j] corresponds to the flow on the (i,j) arc.</p><p><strong>Usage Example:</strong></p><pre><code class="language-julia">julia&gt; using Clp: ClpSolver # use your favorite LP solver here
+julia&gt; g = lg.DiGraph(6) # Create a flow-graph
+julia&gt; lg.add_edge!(g, 5, 1)
+julia&gt; lg.add_edge!(g, 5, 2)
+julia&gt; lg.add_edge!(g, 3, 6)
+julia&gt; lg.add_edge!(g, 4, 6)
+julia&gt; lg.add_edge!(g, 1, 3)
+julia&gt; lg.add_edge!(g, 1, 4)
+julia&gt; lg.add_edge!(g, 2, 3)
+julia&gt; lg.add_edge!(g, 2, 4)
+julia&gt; w = zeros(6,6)
+julia&gt; w[1,3] = 10.
+julia&gt; w[1,4] = 5.
+julia&gt; w[2,3] = 2.
+julia&gt; w[2,4] = 2.
+julia&gt; # v2 -&gt; sink have demand of one
+julia&gt; demand = spzeros(6,6)
+julia&gt; demand[3,6] = 1
+julia&gt; demand[4,6] = 1
+julia&gt; capacity = ones(6,6)
+julia&gt; flow = mincost_flow(g, capacity, demand, w, ClpSolver(), 5, 6)</code></pre></div><a class="source-link" target="_blank" href="https://github.com/JuliaGraphs/LightGraphsFlows.jl/blob/076324949632f741a5443ca0dedbc550561b650d/src/mincost.jl#L1-L41">source</a></section><footer><hr/><a class="previous" href="multiroute.html"><span class="direction">Previous</span><span class="title">Multiroute flows</span></a><a class="next" href="mincut.html"><span class="direction">Next</span><span class="title">Min-cut</span></a></footer></article></body></html>
