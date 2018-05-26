@@ -17,6 +17,10 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/JuliaGraphs/LightGraphsFlows.jl.git",
-    julia = "0.6"
+    deps        = nothing,
+    make        = nothing,
+    repo        = "github.com/JuliaGraphs/LightGraphsFlows.jl.git",
+    target      = "build",
+    julia       = "0.6",
+    osname      = "linux"
 )
