@@ -13,7 +13,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Getting started",
     "title": "LightGraphsFlows.jl: flow algorithms for LightGraphs",
     "category": "section",
-    "text": "CurrentModule = LightGraphsFlows\nDocTestSetup = quote\n    using LightGraphsFlows\n    import LightGraphs\n    const lg = LightGraphs\nendModules = [LightGraphsFlows]\nPages = [\"LightGraphsFlows.jl\"]\nOrder = [:function, :type]"
+    "text": "CurrentModule = LightGraphsFlows\nDocTestSetup = quote\n    using LightGraphsFlows\n    import LightGraphs\n    const lg = LightGraphs\nendModules = [LightGraphsFlows]\nPages = [\"LightGraphsFlows.jl\"]\nOrder = [:function, :type]This is the documentation page for LightGraphsFlows. In all pages, we assume LightGraphsFlows has been imported into scope and that LightGraphs is  available with the alias lg:using LightGraphsFlows\nimport LightGraphs\nconst lg = LightGraphs"
 },
 
 {
