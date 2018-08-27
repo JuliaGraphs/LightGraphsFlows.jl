@@ -48,7 +48,7 @@ getindex(d::DefaultCapacity{T}, s::Integer, t::Integer) where T = if lg.has_edge
 # isassigned{T<:Integer}(d::DefaultCapacity{T}, u::T, v::T) = (u in 1:d.nv) && (v in 1:d.nv)
 size(d::DefaultCapacity) = (Int(d.nv), Int(d.nv))
 transpose(d::DefaultCapacity) = DefaultCapacity(reverse(d.flow_graph))
-ctranspose(d::DefaultCapacity) = DefaultCapacity(reverse(d.flow_graph))
+adjoint(d::DefaultCapacity) = DefaultCapacity(reverse(d.flow_graph))
 
 """
     residual(flow_graph)

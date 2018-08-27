@@ -44,7 +44,7 @@
             @test d[s, t] == 0
             @test size(d) == (nvertices, nvertices)
             @test typeof(transpose(d)) <: LightGraphsFlows.DefaultCapacity
-            @test typeof(ctranspose(d)) <: LightGraphsFlows.DefaultCapacity
+            @test typeof(adjoint(d)) <: LightGraphsFlows.DefaultCapacity
 
             # Test all algorithms - type instability in PushRelabel #553
             for ALGO in [EdmondsKarpAlgorithm, DinicAlgorithm, BoykovKolmogorovAlgorithm, PushRelabelAlgorithm]

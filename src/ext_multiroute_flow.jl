@@ -1,3 +1,4 @@
+# EMRF (Extended Multiroute Flow) algorithms
 """
     emrf(flow_graph, source, target, capacity_matrix, flow_algorithm, routes=0)
 
@@ -13,7 +14,6 @@ multiroute flow function.
 ### References
 - [Extended Multiroute Flow algorithm](http://dx.doi.org/10.1016/j.disopt.2016.05.002)
 """
-# EMRF (Extended Multiroute Flow) algorithms
 function emrf(
         flow_graph::lg.AbstractGraph,          # the input graph
         source::Integer,                       # the source vertex
@@ -104,12 +104,12 @@ Calculates the breaking of the restricted max-flow from a set of auxiliary point
 for `flow_graph` from `source to `target` using capacities in `capacity_matrix`.
 """
 function breakingPoints end
-@traitfn function breakingPoints{T}(
+@traitfn function breakingPoints(
         flow_graph::::lg.IsDirected,                   # the input graph
         source::Integer,                           # the source vertex
         target::Integer,                           # the target vertex
         capacity_matrix::AbstractMatrix{T}   # edge flow capacities
-    )
+    ) where {T}
     auxpoints = auxiliaryPoints(flow_graph, source, target, capacity_matrix)
     λ = length(auxpoints) - 1
     left_index = 1
@@ -131,6 +131,9 @@ function breakingPoints end
     return breakingpoints
 end
 
+# Function to get the nonzero min and max function of a Matrix
+# note: this is more efficient than maximum() / minimum() / extrema()
+#       since we have to ignore zero values.
 """
     minmaxCapacity(capacity_matrix)
 
@@ -139,10 +142,6 @@ Return the nonzero min and max function of `capacity_matrix`.
 Note: this is more efficient than maximum() / minimum() / extrema()
 since we have to ignore zero values.
 """
-
-# Function to get the nonzero min and max function of a Matrix
-# note: this is more efficient than maximum() / minimum() / extrema()
-#       since we have to ignore zero values.
 function minmaxCapacity(
     capacity_matrix::AbstractMatrix{T}    # edge flow capacities
     ) where T

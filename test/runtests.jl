@@ -1,8 +1,10 @@
 using LightGraphsFlows
-using Base.Test
+using Test
 import LightGraphs
 import SimpleTraits
 const lg = LightGraphs
+
+using LinearAlgebra: diag
 
 const testdir = dirname(@__FILE__)
 
