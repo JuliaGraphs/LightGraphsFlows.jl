@@ -31,7 +31,7 @@ install:
 build_script:
 # Need to convert from shallow to complete for Pkg.clone to work
   - IF EXIST .git\shallow (git fetch --unshallow)
-  - C:\julia\bin\julia -e "using InteractiveUtils; versioninfo();
+  - C:\julia\bin\julia -e "using InteractiveUtils, Pkg; versioninfo();
         Pkg.clone(pwd(), \"LightGraphsFlows\"); Pkg.build(\"LightGraphsFlows\")"
 
 test_script:
