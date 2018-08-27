@@ -35,7 +35,7 @@ build_script:
         Pkg.clone(pwd(), \"LightGraphsFlows\"); Pkg.build(\"LightGraphsFlows\")"
 
 test_script:
-    - C:\julia\bin\julia -e "Pkg.test(\"LightGraphsFlows\")"
+    - C:\julia\bin\julia -e "using Pkg; Pkg.test(\"LightGraphsFlows\")"
 
 # # Uncomment to support code coverage upload. Should only be enabled for packages
 # # which would have coverage gaps without running on Windows
