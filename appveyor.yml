@@ -32,10 +32,10 @@ build_script:
 # Need to convert from shallow to complete for Pkg.clone to work
   - IF EXIST .git\shallow (git fetch --unshallow)
   - C:\julia\bin\julia -e "using InteractiveUtils; versioninfo();
-Pkg.clone(pwd(), \"LightGraphsFlows\"); Pkg.build(\"LightGraphsFlows\")"
+        Pkg.clone(pwd(), \"LightGraphsFlows\"); Pkg.build(\"LightGraphsFlows\")"
 
 test_script:
-- C:\julia\bin\julia -e "Pkg.test(\"LightGraphsFlows\")"
+    - C:\julia\bin\julia -e "Pkg.test(\"LightGraphsFlows\")"
 
 # # Uncomment to support code coverage upload. Should only be enabled for packages
 # # which would have coverage gaps without running on Windows
