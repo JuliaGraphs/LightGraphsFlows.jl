@@ -16,12 +16,12 @@ Min-Cut/Max-Flow Algorithms for Energy Minimization in Vision.
 """
 function boykov_kolmogorov_impl end
 # see https://github.com/mauro3/SimpleTraits.jl/issues/47#issuecomment-327880153 for syntax
-@traitfn function boykov_kolmogorov_impl{T, U, AG<:lg.AbstractGraph{U}}(
-    residual_graph::AG::lg.IsDirected,    # the input graph
-    source::Integer,                      # the source vertex
-    target::Integer,                      # the target vertex
-    capacity_matrix::AbstractMatrix{T}    # edge flow capacities
-    )
+@traitfn function boykov_kolmogorov_impl(
+        residual_graph::AG::lg.IsDirected,    # the input graph
+        source::Integer,                      # the source vertex
+        target::Integer,                      # the target vertex
+        capacity_matrix::AbstractMatrix{T}    # edge flow capacities
+    ) where {T, U, AG<:lg.AbstractGraph{U}}
     n = lg.nv(residual_graph)
 
     flow = 0
@@ -53,7 +53,7 @@ function boykov_kolmogorov_impl end
 end
 
 # see https://github.com/mauro3/SimpleTraits.jl/issues/47#issuecomment-327880153 for syntax
-@traitfn function find_path!{T, AG<:lg.AbstractGraph{T}}(
+@traitfn function find_path!(
         residual_graph::AG::lg.IsDirected, # the input graph
         source::Integer,                   # the source vertex
         target::Integer,                   # the target vertex
@@ -62,7 +62,7 @@ end
         PARENT::Vector,                    # parent table
         TREE::Vector,                      # tree table
         A::Vector                          # active set
-    )
+    ) where {T, AG<:lg.AbstractGraph{T}}
     tree_cap(p, q) = TREE[p] == one(T) ? capacity_matrix[p, q] - flow_matrix[p, q] :
     capacity_matrix[q, p] - flow_matrix[q, p]
     while !isempty(A)
@@ -72,7 +72,7 @@ end
                 if TREE[q] == zero(T)
                     TREE[q] = TREE[p]
                     PARENT[q] = p
-                    unshift!(A, q)
+                    pushfirst!(A, q)
                 end
                 if TREE[q] ≠ zero(T) && TREE[q] ≠ TREE[p]
                     # p -> source
@@ -134,11 +134,11 @@ function augment!(
         if flow_matrix[p, q] == capacity_matrix[p, q]
             if TREE[p] == TREE[q] == one(T)
                 PARENT[q] = zero(T)
-                unshift!(O, q)
+                pushfirst!(O, q)
             end
             if TREE[p] == TREE[q] == 2
                 PARENT[p] = zero(T)
-                unshift!(O, p)
+                pushfirst!(O, p)
             end
         end
     end
@@ -146,7 +146,7 @@ function augment!(
     return Δ
 end
 
-@traitfn function adopt!{T, AG<:lg.AbstractGraph{T}}(
+@traitfn function adopt!(
         residual_graph::AG::lg.IsDirected,  # the input graph
         source::Integer,                    # the source vertex
         target::Integer,                    # the target vertex
@@ -156,7 +156,7 @@ end
         TREE::Vector,                       # tree table
         A::Vector,                          # active set
         O::Vector                           # orphan set
-    )
+    ) where {T, AG<:lg.AbstractGraph{T}}
     tree_cap(p, q) = TREE[p] == 1 ? capacity_matrix[p, q] - flow_matrix[p, q] :
     capacity_matrix[q, p] - flow_matrix[q, p]
     while !isempty(O)
@@ -183,11 +183,11 @@ end
             for q in lg.neighbors(residual_graph, p)
                 if TREE[q] == TREE[p]
                     if tree_cap(q, p) > 0
-                        unshift!(A, q)
+                        pushfirst!(A, q)
                     end
                     if PARENT[q] == p
                         PARENT[q] = zero(T)
-                        unshift!(O, q)
+                        pushfirst!(O, q)
                     end
                 end
             end

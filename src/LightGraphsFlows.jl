@@ -8,7 +8,10 @@ import SimpleTraits
 using MathProgBase.HighLevelInterface: linprog
 using MathProgBase.SolverInterface: AbstractMathProgSolver
 
-import Base: getindex, size, transpose, ctranspose
+using SparseArrays: spzeros
+using Markdown: @doc_str
+
+import Base: getindex, size, transpose, adjoint
 
 include("maximum_flow.jl")
 include("edmonds_karp.jl")

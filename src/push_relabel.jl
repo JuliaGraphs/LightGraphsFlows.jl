@@ -8,12 +8,12 @@ FIFO push relabel algorithm with gap heuristic.
 Takes approximately ``\\mathcal{O}(|V|^{3})`` time.
 """
 function push_relabel end
-@traitfn function push_relabel{T}(
+@traitfn function push_relabel(
         residual_graph::::lg.IsDirected,       # the input graph
         source::Integer,                       # the source vertex
         target::Integer,                       # the target vertex
         capacity_matrix::AbstractMatrix{T}     # edge flow capacities
-    )
+    ) where {T}
 
     n = lg.nv(residual_graph)
     flow_matrix = zeros(T, n, n)
@@ -55,7 +55,6 @@ end
 Push inactive node `v` into queue `Q` and activates it. Requires preallocated
 `active` and `excess` vectors.
 """
-
 function enqueue_vertex!(
         Q::AbstractVector,
         v::Integer,                   # input vertex
@@ -64,7 +63,7 @@ function enqueue_vertex!(
     )
     if !active[v] && excess[v] > 0
         active[v] = true
-        unshift!(Q, v)
+        pushfirst!(Q, v)
     end
     return nothing
 end
