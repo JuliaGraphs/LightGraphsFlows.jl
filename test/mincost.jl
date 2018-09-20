@@ -1,4 +1,5 @@
 using Clp: ClpSolver
+using SparseArrays: spzeros
 
 @testset "Minimum-cost flow" begin
 
