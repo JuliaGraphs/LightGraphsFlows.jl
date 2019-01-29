@@ -1,5 +1,5 @@
 """
-    mincost_flow(graph, node_demand, edge_capacity, edge_cost, solver,<keyword argument>)
+    mincost_flow(graph, node_demand, edge_capacity, edge_cost, solver,<keyword arguments>)
 
 Find a flow satisfying the `node_demand` at each node and `edge_capacity` constraints for each edge
 while minimizing the `sum(edge_cost.*flow)`.
@@ -14,8 +14,9 @@ Returns a flow matrix, flow[i,j] corresponds to the flow on the (i,j) arc.
 # Arguments
 - `edge_demand::AbstractMatrix`: demand a minimum flow for a given edge.
 - `edge_demand_exact=true`: changes the capacity of a non zero edge to the demanded value
-- `sources_to_maximize::AbstractVector` sources at which the nodal production will be >= node_demand
-- `sinks_to_maximize::AbstractVector` sinks at which the nodal consumption will be >= abs(node_demand)
+- `source_nodes::AbstractVector` Sources at which the nodal netflow is allowed to be greater than nodal demand **
+- `sink_nodes::AbstractVector` Sinks at which the nodal netflow is allowed to be less than nodal demand **
+   ** source_nodes & sink_nodes are only needed when nodal flow are not explictly set in node_demand
 
 ### Usage Example:
 
@@ -51,8 +52,8 @@ function mincost_flow(g::lg.DiGraph,
 		solver::AbstractMathProgSolver;
 		edge_demand::Union{Nothing,AbstractMatrix} = nothing,
 		edge_demand_exact::Bool = false, #If true changes capacity of that node to the value in edge demand
-		sources_to_maximize::AbstractVector{<:Integer} = Vector{Integer}(), #Source nodes at which to maximize to flow
-		sinks_to_maximize::AbstractVector{<:Integer} = Vector{Integer}()	   #sink nodes at which to maximize to flow
+		source_nodes::AbstractVector{<:Integer} = Vector{Integer}(), #Source nodes at which to allow a netflow greater than nodal demand
+		sink_nodes::AbstractVector{<:Integer} = Vector{Integer}()	 #Sink nodes at which to allow a netflow less than nodal demand
 		)
 	T = eltype(g)
 	VT = promote_type(eltype(edge_capacity),eltype(node_demand),eltype(edge_cost))
@@ -90,10 +91,10 @@ function mincost_flow(g::lg.DiGraph,
 		b[n] = node_demand[n]
 	end
 
-	for n in sources_to_maximize
+	for n in source_nodes
 		sense[n] = '>'
 	end
-	for n in sinks_to_maximize
+	for n in sink_nodes
 		sense[n] = '<'
 	end
 
@@ -111,7 +112,7 @@ end
 		cost::AbstractMatrix,
 		solver::AbstractMathProgSolver,
 		source::Int, # if source and/or sink omitted or not in nodes, circulation problem
-		sink::Int)  mincost_flow(g,spzeros(lg.nv(g)),capacity,cost,solver,edge_demand=demand,sources_to_maximize=[source],sinks_to_maximize=[sink])
+		sink::Int)  mincost_flow(g,spzeros(lg.nv(g)),capacity,cost,solver,edge_demand=demand,source_nodes=[source],sink_nodes=[sink])
 
 @deprecate mincost_flow(g::lg.DiGraph,
 		capacity::AbstractMatrix,
