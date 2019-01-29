@@ -15,8 +15,8 @@ Returns a flow matrix, flow[i,j] corresponds to the flow on the (i,j) arc.
 - `edge_demand::AbstractMatrix`: demand a minimum flow for a given edge.
 - `edge_demand_exact=true`: changes the capacity of a non zero edge to the demanded value
 - `sources_to_maximize::AbstractVector` sources at which the nodal production will be >= node_demand
-- `sinks_to_maximize::AbstractVector` sinks at which the nodal consumption will be >= abs(node_demand),
-this is really going to minimize this the flo/
+- `sinks_to_maximize::AbstractVector` sinks at which the nodal consumption will be >= abs(node_demand)
+
 ### Usage Example:
 
 ```julia
@@ -39,70 +39,69 @@ julia> demand = spzeros(6)
 julia> demand[5] = 2
 julia> demand[6] = -2
 julia> capacity = ones(6,6)
-julia> flow = mincost_flow(g, capacity, demand, w, ClpSolver())
+julia> flow = mincost_flow(g, demand, capacity, w, ClpSolver())
 ```
 """
 
 
 function mincost_flow(g::lg.DiGraph,
-		demand::AbstractVector,
-		capacity::AbstractMatrix,
-		cost::AbstractMatrix,
+		node_demand::AbstractVector,
+		edge_capacity::AbstractMatrix,
+		edge_cost::AbstractMatrix,
 		solver::AbstractMathProgSolver;
-		edge_demand::Union{Nothing,AbstractMatrix}=nothing,
-		edge_demand_exact::Bool=false, #If true changes capacity of that node to the value in edge demand
-		sources_to_maximize::AbstractVector{<:Integer}= Vector{Integer}(), #maximize the flow to have an absolute flow greater than demand
-		sinks_to_maximize::AbstractVector{<:Integer}= Vector{Integer}()
-		 #maximize the flow to have an absolute flow greater than demand
+		edge_demand::Union{Nothing,AbstractMatrix} = nothing,
+		edge_demand_exact::Bool = false, #If true changes capacity of that node to the value in edge demand
+		sources_to_maximize::AbstractVector{<:Integer} = Vector{Integer}(), #Source nodes at which to maximize to flow
+		sinks_to_maximize::AbstractVector{<:Integer} = Vector{Integer}()	   #sink nodes at which to maximize to flow
 		)
-	T=eltype(g)
-	VT=promote_type(eltype(capacity),eltype(demand),eltype(cost))
+	T = eltype(g)
+	VT = promote_type(eltype(edge_capacity),eltype(node_demand),eltype(edge_cost))
 
 	nv = lg.nv(g)
-	ne=lg.ne(g)
-	b =Vector{VT}(undef,nv)
-	AI=Vector{T}(undef,2*ne)
-	AJ=Vector{T}(undef,2*ne)
-	AV=Vector{VT}(undef,2*ne)
-	edge_costs=Vector{VT}(undef,ne)
-	upperbounds=Vector{VT}(undef,ne)
-	lowerbounds=Vector{VT}(undef,ne)
+	ne = lg.ne(g)
+	b = Vector{VT}(undef,nv)
+	AI = Vector{T}(undef,2*ne)
+	AJ = Vector{T}(undef,2*ne)
+	AV = Vector{VT}(undef,2*ne)
+	edge_costs = Vector{VT}(undef,ne)
+	upperbounds = Vector{VT}(undef,ne)
+	lowerbounds = Vector{VT}(undef,ne)
 	sense = ['=' for _ in 1:nv]
 
-	has_edge_demand= edge_demand !=nothing
+	has_edge_demand= edge_demand !== nothing
 
-	inds=[-1,0]
+	inds = [-1,0]
 	for (n,e) in enumerate(lg.edges(g))
-		inds.+=2
-		s=lg.src(e)
-		t=lg.dst(e)
-		AI[inds]=[s,t] #the node index
-		AJ[inds]=[n,n]  #the edge index
-		AV[inds]=[1,-1]
-		upperbounds[n]=capacity[s,t]
-		lowerbounds[n]= has_edge_demand ? edge_demand[s,t] : 0
+		inds .+= 2
+		s = lg.src(e)
+		t = lg.dst(e)
+		AI[inds] = [s,t] #the node index
+		AJ[inds] = [n,n]  #the edge index
+		AV[inds] = [1,-1]
+		upperbounds[n] = edge_capacity[s,t]
+		lowerbounds[n] = has_edge_demand ? edge_demand[s,t] : zero(VT)
 		if edge_demand_exact && has_edge_demand && lowerbounds[n] != 0
-			upperbounds[n] =lowerbounds[n]
+			upperbounds[n] = lowerbounds[n]
 		end
 
-		edge_costs[n]=cost[s,t]
+		edge_costs[n] = edge_cost[s,t]
 	end
-	for n=1:nv
-		b[n]=demand[n]
+	for n = 1:nv
+		b[n] = node_demand[n]
 	end
 
 	for n in sources_to_maximize
-		sense[n]='>'
+		sense[n] = '>'
 	end
 	for n in sinks_to_maximize
-		sense[n]='<'
+		sense[n] = '<'
 	end
 
 
-	A=sparse(AI,AJ,AV,nv,ne)
+	A = sparse(AI,AJ,AV,nv,ne)
 	# return (edge_costs, A, sense, b, lowerbounds, upperbounds, solver)
 	sol = linprog(edge_costs, A, sense, b, lowerbounds, upperbounds, solver)
-	sol_sparse=sparse(view(AI,1:2:2*ne),view(AI,2:2:2*ne),sol.sol,nv,nv)
+	sol_sparse = sparse(view(AI,1:2:2*ne),view(AI,2:2:2*ne),sol.sol,nv,nv)
 	return sol_sparse
 end
 
