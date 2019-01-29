@@ -1,7 +1,7 @@
 using Clp: ClpSolver
 using SparseArrays: spzeros
-
-@testset "Minimum-cost flow" begin
+#This is for testing of the depreciated interface.   Please remove once that interface is removed
+@testset "Minimum-cost flow Depreciated" begin
 
     # bipartite oriented + source & sink
     # source 5, sink 6, v1 {1, 2} v2 {3, 4}
@@ -25,7 +25,7 @@ using SparseArrays: spzeros
     demand[4,6] = 1
     capacity = ones(6,6)
 
-    flow = mincost_flow(g, spzeros(lg.nv(g)),capacity, w, ClpSolver(), edge_demand=demand,source_nodes=[5],sink_nodes= [6])
+    flow = mincost_flow(g, capacity, demand, w, ClpSolver(), 5, 6)
     @test flow[5,1] == 1
     @test flow[5,2] == 1
     @test flow[3,6] == 1
@@ -40,67 +40,10 @@ using SparseArrays: spzeros
     for n1 = 1:4
         @test sum(flow[n1,:]) ≈ sum(flow[:,n1])
     end
-
-    #same test with exact flows
-    flow = mincost_flow(g, spzeros(lg.nv(g)),capacity, w, ClpSolver(),edge_demand_exact=true, edge_demand=demand,source_nodes=[5],sink_nodes= [6])
-    @test flow[5,1] == 1
-    @test flow[5,2] == 1
-    @test flow[3,6] == 1
-    @test flow[4,6] == 1
-    @test flow[1,4] == 1
-    @test flow[2,4] == 0
-    @test flow[2,3] == 1
-    @test flow[1,3] == 0
-    @test sum(diag(flow)) == 0
-
-    # flow conservation property
-    for n1 = 1:4
-        @test sum(flow[n1,:]) ≈ sum(flow[:,n1])
-    end
-
-    #--- Same test without edge_demands & positive cost should result in null flow
-    flow = mincost_flow(g, spzeros(lg.nv(g)),capacity, w, ClpSolver(),source_nodes=[5],sink_nodes= [6])
-    @test flow[5,1] == 0
-    @test flow[5,2] == 0
-    @test flow[3,6] == 0
-    @test flow[4,6] == 0
-    @test flow[1,4] == 0
-    @test flow[2,4] == 0
-    @test flow[2,3] == 0
-    @test flow[1,3] == 0
-    @test sum(diag(flow)) == 0
-
-    # flow conservation property
-    for n1 = 1:4
-        @test sum(flow[n1,:]) ≈ sum(flow[:,n1])
-    end
-
-
-    #run sam test again with nodal demands
-    node_demand=spzeros(6)
-    node_demand[5]=2
-    node_demand[6]=-2
-    #--- Same test without edge_demands
-    flow = mincost_flow(g, node_demand,capacity, w, ClpSolver())
-    @test flow[5,1] == 1
-    @test flow[5,2] == 1
-    @test flow[3,6] == 1
-    @test flow[4,6] == 1
-    @test flow[1,4] == 1
-    @test flow[2,4] == 0
-    @test flow[2,3] == 1
-    @test flow[1,3] == 0
-    @test sum(diag(flow)) == 0
-
-    # flow conservation property
-    for n1 = 1:4
-        @test sum(flow[n1,:]) ≈ sum(flow[:,n1])
-    end
-
 
     # no demand => null flow
     d2 = spzeros(6,6)
-    flow = mincost_flow(g, spzeros(lg.nv(g)),capacity, w, ClpSolver(), edge_demand=d2,source_nodes=[5],sink_nodes= [6])
+    flow = mincost_flow(g, capacity, d2, w, ClpSolver(), 5, 6)
     for idx in 1:6
         for jdx in 1:6
             @test flow[idx,jdx] ≈ 0.0
@@ -120,7 +63,7 @@ using SparseArrays: spzeros
     demand = spzeros(6,6)
     demand[1,2] = 1
     costs = ones(6,6)
-    flow = mincost_flow(g,spzeros(lg.nv(g)), capacity, costs, ClpSolver(), edge_demand=demand)
+    flow = mincost_flow(g, capacity, demand, costs, ClpSolver())
     active_flows = [(1,2), (2,5), (5,6),(6,1)]
     for s in 1:6
         for t in 1:6
@@ -137,7 +80,7 @@ using SparseArrays: spzeros
     end
     # higher short-circuit cost
     costs[2,5] = 10.
-    flow = mincost_flow(g,spzeros(lg.nv(g)), capacity, costs, ClpSolver(), edge_demand=demand)
+    flow = mincost_flow(g, capacity, demand, costs, ClpSolver())
     active_flows = [(1,2),(2,3),(3,4),(4,5),(5,6),(6,1)]
     for s in 1:6
         for t in 1:6
