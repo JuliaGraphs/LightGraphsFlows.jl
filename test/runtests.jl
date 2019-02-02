@@ -19,6 +19,7 @@ for t in [
         "maximum_flow",
         "multiroute_flow",
         "mincost",
+        "mincost_dep",  #Please remove this once depreciated mincost_flow iterface is removed
         "mincut",
         ]
     tp = joinpath(testdir, "$(t).jl")

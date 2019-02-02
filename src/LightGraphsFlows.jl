@@ -8,7 +8,7 @@ import SimpleTraits
 using MathProgBase.HighLevelInterface: linprog
 using MathProgBase.SolverInterface: AbstractMathProgSolver
 
-using SparseArrays: spzeros
+using SparseArrays: spzeros, sparse, sparsevec
 using Markdown: @doc_str
 
 import Base: getindex, size, transpose, adjoint
@@ -26,6 +26,7 @@ include("mincut.jl")
 
 export
 maximum_flow, EdmondsKarpAlgorithm, DinicAlgorithm, BoykovKolmogorovAlgorithm, PushRelabelAlgorithm,
-multiroute_flow, KishimotoAlgorithm, ExtendedMultirouteFlowAlgorithm, mincost_flow, mincut
+multiroute_flow, KishimotoAlgorithm, ExtendedMultirouteFlowAlgorithm, mincost_flow
+
 
 end
