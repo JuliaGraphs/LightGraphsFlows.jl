@@ -169,6 +169,21 @@ function relabel! end
     nothing
 end
 
+"""
+    is_zero(value)
+
+Test if the value is equal to zero. It handles floating point errors.
+"""
+function is_zero end
+function is_zero(
+        value::T
+    ) where {T}
+    if isa(value,AbstractFloat)
+        return isapprox(value, 0, atol = eps(T))
+    else
+        return value == 0
+    end
+end
 
 """
     discharge!(residual_graph, v, capacity_matrix, flow_matrix, excess, height, active, count, Q)
@@ -189,11 +204,11 @@ function discharge! end
         Q::AbstractVector                   # FIFO queue
     )
     for to in lg.outneighbors(residual_graph, v)
-        excess[v] == 0 && break
+        is_zero(excess[v]) && break
         push_flow!(residual_graph, v, to, capacity_matrix, flow_matrix, excess, height, active, Q)
     end
 
-    if excess[v] > 0
+    if ! is_zero(excess[v])
         if count[height[v] + 1] == 1
             gap!(residual_graph, height[v], excess, height, active, count, Q)
         else
