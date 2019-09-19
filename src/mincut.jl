@@ -13,13 +13,16 @@ function mincut(
         algorithm::AbstractFlowAlgorithm       # keyword argument for algorithm
     )
     flow, flow_matrix = maximum_flow(flow_graph, source, target, capacity_matrix, algorithm)
+    residual_matrix = spzeros(lg.nv(flow_graph),lg.nv(flow_graph))
+    for edge in lg.edges(flow_graph)
+        residual_matrix[edge.src,edge.dst] = max(0.0, capacity_matrix[edge.src,edge.dst] - flow_matrix[edge.src,edge.dst])
+    end
     part1 = typeof(source)[]
     queue = [source]
     while !isempty(queue)
         node = pop!(queue)
         push!(part1, node)
-        succs = [succ for succ in lg.outneighbors(flow_graph, node) if capacity_matrix[node,succ] - flow_matrix[node, succ]>0.0 && succ ∉ mincut]
-        preds = [pred for pred in lg.inneighbors(flow_graph, node) if flow_matrix[pred,node]>0.0 && pred ∉ mincut]
+        dests = [dst for dst in 1:lg.nv(flow_graph) if residual_matrix[node,dst]>0.0 && dst ∉ part1]
         append!(queue, dests)
     end
     part2 = [node for node in 1:lg.nv(flow_graph) if node ∉ part1]
