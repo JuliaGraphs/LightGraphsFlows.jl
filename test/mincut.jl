@@ -34,6 +34,23 @@
     (part1, part2, value) = LightGraphsFlows.mincut(g2,1,5,cap1,LightGraphsFlows.PushRelabelAlgorithm())
     @test value ≈ 3.0
     @test sort(part1) == [1,3,4]
-    @test sort(part2) == [2,5]    
+    @test sort(part2) == [2,5]
+
+    #non regression test
+    flow_graph = lg.DiGraph(7)
+    capacity_matrix = zeros(7,7)
+    flow_edges = [
+    (1,2,2),(1,3,2),(2,4,4),(2,5,4),
+    (3,5,4),(3,6,4),(4,7,1),(5,7,1),(6,7,1)
+    ]
+    for e in flow_edges
+       u, v, f = e
+    lg.add_edge!(flow_graph, u, v)
+    capacity_matrix[u,v] = f
+    end
+    (part1, part2, value) = LightGraphsFlows.mincut(flow_graph, 1, 7, capacity_matrix, EdmondsKarpAlgorithm())
+    @test value ≈ 3.0
+    @test sort(part1) == [1,2,3,4,5,6]
+    @test sort(part2) == [7]
 
 end
