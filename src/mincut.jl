@@ -16,6 +16,7 @@ function mincut(
     residual_matrix = spzeros(lg.nv(flow_graph),lg.nv(flow_graph))
     for edge in lg.edges(flow_graph)
         residual_matrix[edge.src,edge.dst] = max(0.0, capacity_matrix[edge.src,edge.dst] - flow_matrix[edge.src,edge.dst])
+        residual_matrix[edge.dst,edge.src] = max(0.0, capacity_matrix[edge.dst,edge.src] - flow_matrix[edge.dst,edge.src])
     end
     part1 = typeof(source)[]
     queue = [source]
