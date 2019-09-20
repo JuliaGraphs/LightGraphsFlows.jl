@@ -23,7 +23,7 @@ function mincut(
     while !isempty(queue)
         node = pop!(queue)
         push!(part1, node)
-        dests = [dst for dst in 1:lg.nv(flow_graph) if residual_matrix[node,dst]>0.0 && dst ∉ part1]
+        dests = [dst for dst in 1:lg.nv(flow_graph) if residual_matrix[node,dst]>0.0 && dst ∉ part1 && dst ∉ queue]
         append!(queue, dests)
     end
     part2 = [node for node in 1:lg.nv(flow_graph) if node ∉ part1]
