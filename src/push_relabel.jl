@@ -170,22 +170,6 @@ function relabel! end
 end
 
 """
-    is_zero(value)
-
-Test if the value is equal to zero. It handles floating point errors.
-"""
-function is_zero end
-function is_zero(
-        value::T
-    ) where {T}
-    if isa(value,AbstractFloat)
-        return isapprox(value, 0, atol = eps(T))
-    else
-        return value == 0
-    end
-end
-
-"""
     discharge!(residual_graph, v, capacity_matrix, flow_matrix, excess, height, active, count, Q)
 
 Drain the excess flow out of node `v`. Run the gap heuristic or relabel the

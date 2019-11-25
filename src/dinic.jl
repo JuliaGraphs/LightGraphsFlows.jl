@@ -21,7 +21,7 @@ function dinic_impl end
 
     while true
         augment = blocking_flow!(residual_graph, source, target, capacity_matrix, flow_matrix, P)
-        augment == 0 && break
+        is_zero(augment) && break
         flow += augment
     end
     return flow, flow_matrix
@@ -80,7 +80,7 @@ function blocking_flow! end
             end
         end
 
-        flow == 0 && continue                      # Flow cannot be augmented along path
+        is_zero(flow) && continue                      # Flow cannot be augmented along path
 
         v = target
         u = bv
