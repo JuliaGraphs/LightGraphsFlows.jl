@@ -189,7 +189,7 @@ function is_zero(
         value::T
     ) where {T}
     if isa(value,AbstractFloat)
-        return isapprox(value, 0, atol = eps(T))
+        return isapprox(value, 0, atol = sqrt(eps(T)))
     else
         return value == 0
     end
