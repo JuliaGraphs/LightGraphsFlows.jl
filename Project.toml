@@ -1,7 +1,7 @@
 name = "LightGraphsFlows"
 uuid = "82600de9-ce5e-4820-8b06-a31567f9ccfb"
 authors = ["Mathieu Besançon <mathieu.besancon@gmail.com>"]
-version = "0.1.0"
+version = "0.3.1"
 
 [deps]
 LightGraphs = "093fc24a-ae57-5d10-9952-331d41423f4d"
