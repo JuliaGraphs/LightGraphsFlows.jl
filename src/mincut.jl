@@ -16,13 +16,14 @@ function mincut(
     residual_matrix = spzeros(lg.nv(flow_graph),lg.nv(flow_graph))
     for edge in lg.edges(flow_graph)
         residual_matrix[edge.src,edge.dst] = max(0.0, capacity_matrix[edge.src,edge.dst] - flow_matrix[edge.src,edge.dst])
+        residual_matrix[edge.dst,edge.src] = max(0.0, capacity_matrix[edge.dst,edge.src] - flow_matrix[edge.dst,edge.src])
     end
     part1 = typeof(source)[]
     queue = [source]
     while !isempty(queue)
         node = pop!(queue)
         push!(part1, node)
-        dests = [dst for dst in 1:lg.nv(flow_graph) if residual_matrix[node,dst]>0.0 && dst ∉ part1]
+        dests = [dst for dst in 1:lg.nv(flow_graph) if residual_matrix[node,dst]>0.0 && dst ∉ part1 && dst ∉ queue]
         append!(queue, dests)
     end
     part2 = [node for node in 1:lg.nv(flow_graph) if node ∉ part1]
