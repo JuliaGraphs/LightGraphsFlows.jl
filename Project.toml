@@ -1,5 +1,5 @@
 name = "LightGraphsFlows"
-uuid = "82600de9-ce5e-4820-8b06-a31567f9ccfb"
+uuid = "2f5eb75a-258c-59e0-affc-f41c55f75335"
 authors = ["Mathieu Besançon <mathieu.besancon@gmail.com>"]
 version = "0.3.1"
 
