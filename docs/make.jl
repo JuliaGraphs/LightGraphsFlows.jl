@@ -1,6 +1,6 @@
 using Documenter
 using LightGraphsFlows
-import LightGraphs
+using LightGraphs
 const lg = LightGraphs
 
 makedocs(
@@ -20,6 +20,5 @@ deploydocs(
     deps        = nothing,
     make        = nothing,
     repo        = "github.com/JuliaGraphs/LightGraphsFlows.jl.git",
-    target      = "build",
-    osname      = "linux"
+    versions = ["stable" => "v^", "v#.#", "dev" => "master"],
 )
