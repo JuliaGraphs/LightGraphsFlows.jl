@@ -81,7 +81,10 @@ Mincost flow is solving a linear optimization problem and thus requires a LP sol
 defined by [MathProgBase.jl](http://mathprogbasejl.readthedocs.io).
 
 ```julia
-using Clp: ClpSolver
+using SparseArrays: spzeros
+import Clp
+using JuMP: with_optimizer
+
 g = lg.DiGraph(6)
 lg.add_edge!(g, 5, 1)
 lg.add_edge!(g, 5, 2)
@@ -91,16 +94,17 @@ lg.add_edge!(g, 1, 3)
 lg.add_edge!(g, 1, 4)
 lg.add_edge!(g, 2, 3)
 lg.add_edge!(g, 2, 4)
-w = zeros(6,6)
-w[1,3] = 10.
-w[1,4] = 5.
-w[2,3] = 2.
-w[2,4] = 2.
+cost = zeros(6,6)
+cost[1,3] = 10.
+cost[1,4] = 5.
+cost[2,3] = 2.
+cost[2,4] = 2.
 # v2 -> sink have demand of one
 demand = spzeros(6,6)
 demand[3,6] = 1
 demand[4,6] = 1
+node_demand = spzeros(6)
 capacity = ones(6,6)
 
-flow = mincost_flow(g, capacity, demand, w, ClpSolver(), 5, 6)
+flow = mincost_flow(g, node_demand, capacity, cost, with_optimizer(Clp.Optimizer), edge_demand=demand, source_nodes=[5], sink_nodes=[6])
 ```
