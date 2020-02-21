@@ -10,7 +10,7 @@
     		)
 
 Find a flow over a directed graph `g` satisfying the `node_demand` at each
-node and `edge_capacity` constraints for each edge while minimizing `dot(edge_cost, flow)`.
+node and `edge_capacity` constraints for each edge while minimizing `dot(edge_cost, flow)`.
 
 Returns a sparse flow matrix, flow[i,j] corresponds to the flow on the (i,j) arc.
 
