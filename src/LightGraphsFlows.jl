@@ -1,12 +1,12 @@
 module LightGraphsFlows
 
-import LightGraphs
+using LightGraphs
 const lg = LightGraphs
+
 using SimpleTraits: @traitfn, @traitimpl
 import SimpleTraits
 
-using MathProgBase.HighLevelInterface: linprog
-using MathProgBase.SolverInterface: AbstractMathProgSolver
+using JuMP
 
 using SparseArrays: spzeros, sparse, sparsevec
 using Markdown: @doc_str
@@ -27,6 +27,5 @@ include("mincut.jl")
 export
 maximum_flow, EdmondsKarpAlgorithm, DinicAlgorithm, BoykovKolmogorovAlgorithm, PushRelabelAlgorithm,
 multiroute_flow, KishimotoAlgorithm, ExtendedMultirouteFlowAlgorithm, mincost_flow
-
 
 end
