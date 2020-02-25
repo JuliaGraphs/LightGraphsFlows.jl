@@ -18,8 +18,8 @@ SimpleTraits = "0.9"
 julia = "1"
 
 [extras]
-Clp = "e2554f3b-3117-50c0-817c-e040a3ddf72d"
+GLPK = "60bf3e95-4087-53dc-ae20-288a0d20c6a6"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Clp", "Test"]
+test = ["GLPK", "Test"]

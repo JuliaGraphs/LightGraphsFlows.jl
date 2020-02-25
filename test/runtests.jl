@@ -6,6 +6,9 @@ const lg = LightGraphs
 
 using LinearAlgebra: diag
 
+using JuMP
+import GLPK
+
 const testdir = dirname(@__FILE__)
 
 testgraphs(g) = [g, lg.Graph{UInt8}(g), lg.Graph{Int16}(g)]
