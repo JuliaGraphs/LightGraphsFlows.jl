@@ -17,18 +17,20 @@ Documentation for this package is available [here](https://juliagraphs.github.io
 ### Maxflow 
 
 ```julia
-julia> flow_graph = lg.DiGraph(8) # Create a flow-graph
+julia> using LightGraphs, LightGraphsFlows
+julia> const LG = LightGraphs
+julia> flow_graph = LG.DiGraph(8) # Create a flow graph
 julia> flow_edges = [
-(1,2,10),(1,3,5),(1,4,15),(2,3,4),(2,5,9),
-(2,6,15),(3,4,4),(3,6,8),(4,7,16),(5,6,15),
-(5,8,10),(6,7,15),(6,8,10),(7,3,6),(7,8,10)
+    (1,2,10),(1,3,5),(1,4,15),(2,3,4),(2,5,9),
+    (2,6,15),(3,4,4),(3,6,8),(4,7,16),(5,6,15),
+    (5,8,10),(6,7,15),(6,8,10),(7,3,6),(7,8,10)
 ]
 
 julia> capacity_matrix = zeros(Int, 8, 8)  # Create a capacity matrix
 
 julia> for e in flow_edges
     u, v, f = e
-    lg.add_edge!(flow_graph, u, v)
+    LG.add_edge!(flow_graph, u, v)
     capacity_matrix[u,v] = f
 end
 
@@ -46,7 +48,10 @@ julia> f, F, labels = maximum_flow(flow_graph, 1, 8, capacity_matrix, algorithm=
 ### Multi-route flow
 
 ```julia
-julia> flow_graph = lg.DiGraph(8) # Create a flow graph
+julia> using LightGraphs, LightGraphsFlows
+julia> const LG =  LightGraphs
+
+julia> flow_graph = LG.DiGraph(8) # Create a flow graph
 
 julia> flow_edges = [
 (1, 2, 10), (1, 3, 5),  (1, 4, 15), (2, 3, 4),  (2, 5, 9),
@@ -58,7 +63,7 @@ julia> capacity_matrix = zeros(Int, 8, 8) # Create a capacity matrix
 
 julia> for e in flow_edges
     u, v, f = e
-    add_edge!(flow_graph, u, v)
+    LG.add_edge!(flow_graph, u, v)
     capacity_matrix[u, v] = f
 end
 
@@ -70,9 +75,7 @@ julia> points = multiroute_flow(flow_graph, 1, 8, capacity_matrix) # Run default
 
 julia> f, F = multiroute_flow(points, 1.5) # Then run multiroute flow algorithm for any positive number of routes
 
-julia> f = multiroute_flow(points, 1.5, valueonly = true)
-
-julia> f, F, labels = multiroute_flow(flow_graph, 1, 8, capacity_matrix, algorithm = BoykovKolmogorovAlgorithm(), routes = 2) # Run multiroute flow algorithm using Boykov-Kolmogorov algorithm as maximum_flow routine
+julia> f, F, labels = multiroute_flow(flow_graph, 1, 8, capacity_matrix, flow_algorithm = BoykovKolmogorovAlgorithm(), routes = 2) # Run multiroute flow algorithm using Boykov-Kolmogorov algorithm as maximum_flow routine
 ```
 
 ## Mincost flow
@@ -81,29 +84,34 @@ Mincost flow is solving a linear optimization problem and thus requires a LP opt
 defined by [MathOptInterface.jl](https://www.juliaopt.org/MathOptInterface.jl/stable/).
 
 ```julia
-using SparseArrays: spzeros
-import Clp
+julia> using SparseArrays: spzeros
+julia> import Clp
 
-g = lg.DiGraph(6)
-lg.add_edge!(g, 5, 1)
-lg.add_edge!(g, 5, 2)
-lg.add_edge!(g, 3, 6)
-lg.add_edge!(g, 4, 6)
-lg.add_edge!(g, 1, 3)
-lg.add_edge!(g, 1, 4)
-lg.add_edge!(g, 2, 3)
-lg.add_edge!(g, 2, 4)
-cost = zeros(6,6)
-cost[1,3] = 10.
-cost[1,4] = 5.
-cost[2,3] = 2.
-cost[2,4] = 2.
+julia> using LightGraphs, LightGraphsFlows
+julia> const LG =  LightGraphs
+
+julia> g = LG.DiGraph(6)
+julia> LG.add_edge!(g, 5, 1)
+julia> LG.add_edge!(g, 5, 2)
+julia> LG.add_edge!(g, 3, 6)
+julia> LG.add_edge!(g, 4, 6)
+julia> LG.add_edge!(g, 1, 3)
+julia> LG.add_edge!(g, 1, 4)
+julia> LG.add_edge!(g, 2, 3)
+julia> LG.add_edge!(g, 2, 4)
+julia> cost = zeros(6,6)
+julia> cost[1,3] = 10.
+julia> cost[1,4] = 5.
+julia> cost[2,3] = 2.
+julia> cost[2,4] = 2.
+
 # v2 -> sink have demand of one
-demand = spzeros(6,6)
-demand[3,6] = 1
-demand[4,6] = 1
-node_demand = spzeros(6)
-capacity = ones(6,6)
+julia> demand = spzeros(6,6)
+julia> demand[3,6] = 1
+julia> demand[4,6] = 1
+julia> node_demand = spzeros(6)
+julia> capacity = ones(6,6)
 
-flow = mincost_flow(g, node_demand, capacity, cost, Clp.Optimizer, edge_demand=demand, source_nodes=[5], sink_nodes=[6])
+# returns the sparse flow matrix
+julia> flow = mincost_flow(g, node_demand, capacity, cost, Clp.Optimizer, edge_demand=demand, source_nodes=[5], sink_nodes=[6])
 ```
