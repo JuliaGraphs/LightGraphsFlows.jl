@@ -77,8 +77,8 @@ julia> f, F, labels = multiroute_flow(flow_graph, 1, 8, capacity_matrix, algorit
 
 ## Mincost flow
 
-Mincost flow is solving a linear optimization problem and thus requires a LP solver
-defined by [MathProgBase.jl](http://mathprogbasejl.readthedocs.io).
+Mincost flow is solving a linear optimization problem and thus requires a LP optimizer
+defined by [MathOptInterface.jl](https://www.juliaopt.org/MathOptInterface.jl/stable/).
 
 ```julia
 using SparseArrays: spzeros
@@ -105,5 +105,5 @@ demand[4,6] = 1
 node_demand = spzeros(6)
 capacity = ones(6,6)
 
-flow = mincost_flow(g, node_demand, capacity, cost, with_optimizer(Clp.Optimizer), edge_demand=demand, source_nodes=[5], sink_nodes=[6])
+flow = mincost_flow(g, node_demand, capacity, cost, Clp.Optimizer, edge_demand=demand, source_nodes=[5], sink_nodes=[6])
 ```
