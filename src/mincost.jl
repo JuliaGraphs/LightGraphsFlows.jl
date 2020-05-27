@@ -21,7 +21,7 @@ Returns a sparse flow matrix, flow[i,j] corresponds to the flow on the (i,j) arc
 positive for sink nodes, and zero for all other nodes.
 - `edge_capacity::AbstractMatrix` sets an upper bound on the flow of each arc.
 - `edge_cost::AbstractMatrix` the cost per unit of flow on each arc.
-- `optimizer` is an optimizer factory as defined in JuMP, passed at the construction of the `JuMP.Model`.
+- `optimizer` is an optimizer constructor, like `Clp.Optimizer` or `() -> Clp.Optimizer()` passed at the construction of the `JuMP.Model`.
 
 # Keyword arguments
 
@@ -38,7 +38,6 @@ julia> import LightGraphs
 julia> const LG = LightGraphs
 julia> using LightGraphsFlows: mincost_flow
 julia> import Clp # use your favorite LP solver here
-julia> import JuMP
 julia> using SparseArrays: spzeros
 julia> g = LG.DiGraph(6) # Create a flow-graph
 julia> LG.add_edge!(g, 5, 1)
@@ -58,7 +57,7 @@ julia> demand = spzeros(6)
 julia> demand[5] = -2
 julia> demand[6] = 2
 julia> capacity = ones(6,6)
-julia> flow = mincost_flow(g, demand, capacity, cost, JuMP.with_optimizer(Clp.Optimizer))
+julia> flow = mincost_flow(g, demand, capacity, cost, Clp.Optimizer)
 ```
 """
 function mincost_flow end

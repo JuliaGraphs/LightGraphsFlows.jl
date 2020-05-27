@@ -1,6 +1,6 @@
 @testset "Mincut" begin
 
-    g = lg.CompleteDiGraph(5)
+    g = lg.complete_digraph(5)
     cap1 = [
        0.0 2.0 2.0 0.0 0.0
        0.0 0.0 0.0 0.0 3.0

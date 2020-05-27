@@ -1,5 +1,4 @@
 import GLPK
-using JuMP
 
 using SparseArrays: spzeros
 
@@ -27,7 +26,7 @@ using SparseArrays: spzeros
     demand[4,6] = 1
     capacity = ones(6,6)
 
-    o = with_optimizer(GLPK.Optimizer)
+    o = GLPK.Optimizer
     node_demand = spzeros(lg.nv(g))
     flow = mincost_flow(g, node_demand, capacity, cost, o, edge_demand=demand, source_nodes=[5], sink_nodes=[6])
     @test flow[5,1] ≈ 1
