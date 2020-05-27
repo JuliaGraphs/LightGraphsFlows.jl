@@ -83,7 +83,6 @@ defined by [MathProgBase.jl](http://mathprogbasejl.readthedocs.io).
 ```julia
 using SparseArrays: spzeros
 import Clp
-using JuMP: with_optimizer
 
 g = lg.DiGraph(6)
 lg.add_edge!(g, 5, 1)
