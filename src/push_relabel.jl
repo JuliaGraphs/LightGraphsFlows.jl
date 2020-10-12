@@ -192,7 +192,7 @@ function discharge! end
         push_flow!(residual_graph, v, to, capacity_matrix, flow_matrix, excess, height, active, Q)
     end
 
-    if ! is_zero(excess[v])
+    if excess[v] ≉ zero(excess[v])
         if count[height[v] + 1] == 1
             gap!(residual_graph, height[v], excess, height, active, count, Q)
         else
