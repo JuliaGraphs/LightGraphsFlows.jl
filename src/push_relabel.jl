@@ -16,7 +16,7 @@ function push_relabel end
     ) where {T}
 
     n = lg.nv(residual_graph)
-    flow_matrix = zeros(T, n, n)
+    flow_matrix = spzeros(T, n, n)
 
     height = zeros(Int, n)
     height[source] = n
