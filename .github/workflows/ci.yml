@@ -14,25 +14,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        version:
+          - 'nightly'
+          - '1'
+          - '1.3'
+        os:
+          - ubuntu-latest
+        arch:
+          - x64
+          - x86
         include:
-          - version: 'nightly'
-            os: ubuntu-latest
-            arch:
-              - x64
-              - x86
-          - version: '1'
-            os: ubuntu-latest
-            arch:
-              - x64
-              - x86
-          - version: '1.3'
-            os: ubuntu-latest
-            arch:
-              - x64
-              - x86
-          - version: '1'
-            os: windows-latest
+          - os: windows-latest
             arch: x64
+            version: '1'
     steps:
       - uses: actions/checkout@v2
       - uses: julia-actions/setup-julia@v1
