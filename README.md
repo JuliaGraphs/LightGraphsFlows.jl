@@ -1,9 +1,8 @@
 # LightGraphsFlows
 
-[![Build Status](https://travis-ci.org/JuliaGraphs/LightGraphsFlows.jl.svg?branch=master)](https://travis-ci.org/JuliaGraphs/LightGraphsFlows.jl)
-[![Coverage Status](https://coveralls.io/repos/github/JuliaGraphs/LightGraphsFlows.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaGraphs/LightGraphsFlows.jl?branch=master)
+[![CI](https://github.com/JuliaGraphs/LightGraphsFlows.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/JuliaGraphs/LightGraphsFlows.jl/actions/workflows/ci.yml)
 [![codecov.io](http://codecov.io/github/JuliaGraphs/LightGraphsFlows.jl/coverage.svg?branch=master)](http://codecov.io/github/JuliaGraphs/LightGraphsFlows.jl?branch=master)
-[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://juliagraphs.github.io/LightGraphsFlows.jl/dev/)
+[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://juliagraphs.github.io/LightGraphsFlows.jl/stable/)
 
 Flow algorithms on top of [LightGraphs.jl](https://github.com/JuliaGraphs/LightGraphs.jl),
 including `maximum_flow`, `multiroute_flow` and `mincost_flow`. 
