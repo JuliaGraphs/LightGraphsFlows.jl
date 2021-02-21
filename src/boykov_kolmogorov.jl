@@ -12,7 +12,7 @@ Return the maximum flow in the network, the flow matrix and the partition
 Min-Cut/Max-Flow Algorithms for Energy Minimization in Vision.
 
 ### Author
-- Júlio Hoffimann Mendes (juliohm@stanford.edu)
+- Júlio Hoffimann Mendes (julio.hoffimann@gmail.com)
 """
 function boykov_kolmogorov_impl end
 # see https://github.com/mauro3/SimpleTraits.jl/issues/47#issuecomment-327880153 for syntax

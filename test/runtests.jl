@@ -5,6 +5,7 @@ import SimpleTraits
 const lg = LightGraphs
 
 using LinearAlgebra: diag
+using SparseArrays: spzeros
 
 using JuMP
 import GLPK
