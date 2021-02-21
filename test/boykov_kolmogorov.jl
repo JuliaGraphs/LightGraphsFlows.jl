@@ -101,7 +101,7 @@
 
     flow, _, labels = maximum_flow(G, s, t, C, algorithm=BoykovKolmogorovAlgorithm())
 
-    # because there is only one bridge, and because
+    # because there is only one bridge,
     # the maximum flow allowed is one unit
     @test flow == 1
 
