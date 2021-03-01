@@ -3,6 +3,7 @@ using Test
 using LightGraphs
 import SimpleTraits
 const lg = LightGraphs
+const swg = SimpleWeightedGraphs
 
 using LinearAlgebra: diag
 using SparseArrays: spzeros

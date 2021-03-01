@@ -67,7 +67,7 @@ is created.
 function residual end
 @traitfn residual(flow_graph::::lg.IsDirected) = lg.DiGraph(lg.Graph(flow_graph))
 
-residual(weighted_flow_graph::SimpleWeightedDiGraph) = residual(lg.SimpleDiGraph(weighted_flow_graph))
+residual(weighted_flow_graph::swg.SimpleWeightedDiGraph) = residual(lg.SimpleDiGraph(weighted_flow_graph))
 
 # Method for Edmonds–Karp algorithm
 
