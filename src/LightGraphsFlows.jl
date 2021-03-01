@@ -2,6 +2,8 @@ module LightGraphsFlows
 
 using LightGraphs
 const lg = LightGraphs
+using SimpleWeightedGraphs
+const swg = SimpleWeightedGraphs
 
 using SimpleTraits: @traitfn, @traitimpl
 import SimpleTraits
