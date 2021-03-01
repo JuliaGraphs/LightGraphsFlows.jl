@@ -67,6 +67,8 @@ is created.
 function residual end
 @traitfn residual(flow_graph::::lg.IsDirected) = lg.DiGraph(lg.Graph(flow_graph))
 
+residual(weighted_flow_graph::SimpleWeightedDiGraph) = residual(lg.SimpleDiGraph(weighted_flow_graph))
+
 # Method for Edmonds–Karp algorithm
 
 @traitfn function maximum_flow(
@@ -171,8 +173,12 @@ function maximum_flow(
         DefaultCapacity(flow_graph);
         algorithm::AbstractFlowAlgorithm  =    # keyword argument for algorithm
         PushRelabelAlgorithm(),
-        restriction::Real = 0                  # keyword argument for restriction max-flow
+        restriction::Real = 0,               # keyword argument for restriction max-flow
+        use_weights_as_capacity::Bool=false
     )
+    if use_weights_as_capacity
+        capacity_matrix = weights(flow_graph)
+    end
     if restriction > 0
         return maximum_flow(flow_graph, source, target, min.(restriction, capacity_matrix), algorithm)
     end
