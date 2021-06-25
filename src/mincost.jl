@@ -76,6 +76,7 @@ function mincost_flow end
     m = JuMP.Model(optimizer)
     for (k, v) in optimizer_kwargs
         set_optimizer_attribute(m, string(k), v)
+    end
     vtxs = vertices(g)
 
     source_nodes = [v for v in vtxs if v in source_nodes || node_demand[v] < 0]
