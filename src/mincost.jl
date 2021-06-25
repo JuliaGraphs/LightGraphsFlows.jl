@@ -28,7 +28,7 @@ positive for sink nodes, and zero for all other nodes.
 - `edge_demand::Union{Nothing,AbstractMatrix}`: require a minimum flow for edges, or nothing.
 - `source_nodes` Collection of sources at which the nodal netflow is allowed to be greater than nodal demand, defaults to an empty tuple.
 - `sink_nodes` Collection of sinks at which the nodal netflow is allowed to be less than nodal demand, defaults to an empty tuple.
-- `optimizer_kwargs...` optimzer kwargs... passed to JuMP.Model via JuMP.set_optimizer_attribute function
+- `optimizer_kwargs...` optimizer kwargs passed to JuMP.Model via JuMP.set_optimizer_attribute function
 
 `source_nodes` & `sink_nodes` are only needed when nodal flow are not explictly set in node_demand
 
