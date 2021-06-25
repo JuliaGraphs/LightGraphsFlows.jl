@@ -28,6 +28,7 @@ positive for sink nodes, and zero for all other nodes.
 - `edge_demand::Union{Nothing,AbstractMatrix}`: require a minimum flow for edges, or nothing.
 - `source_nodes` Collection of sources at which the nodal netflow is allowed to be greater than nodal demand, defaults to an empty tuple.
 - `sink_nodes` Collection of sinks at which the nodal netflow is allowed to be less than nodal demand, defaults to an empty tuple.
+- `optimizer_kwargs...` optimizer kwargs passed to JuMP.Model via JuMP.set_optimizer_attribute function
 
 `source_nodes` & `sink_nodes` are only needed when nodal flow are not explictly set in node_demand
 
@@ -63,34 +64,37 @@ julia> flow = mincost_flow(g, demand, capacity, cost, Clp.Optimizer)
 function mincost_flow end
 
 @traitfn function mincost_flow(g::AG::lg.IsDirected,
-		node_demand::AbstractVector,
-		edge_capacity::AbstractMatrix,
-		edge_cost::AbstractMatrix,
-		optimizer;
-		edge_demand::Union{Nothing,AbstractMatrix} = nothing,
-		source_nodes = (), # Source nodes at which to allow a netflow greater than nodal demand
-		sink_nodes = ()	   # Sink nodes at which to allow a netflow less than nodal demand
-		) where {AG <: lg.AbstractGraph}
+    node_demand::AbstractVector,
+    edge_capacity::AbstractMatrix,
+    edge_cost::AbstractMatrix,
+    optimizer;
+    edge_demand::Union{Nothing,AbstractMatrix} = nothing,
+    source_nodes = (), # Source nodes at which to allow a netflow greater than nodal demand
+    sink_nodes = (),	   # Sink nodes at which to allow a netflow less than nodal demand
+    optimizer_kwargs...) where {AG <: lg.AbstractGraph}
 
-	m = JuMP.Model(optimizer)
-	vtxs = vertices(g)
+    m = JuMP.Model(optimizer)
+    for (k, v) in optimizer_kwargs
+        set_optimizer_attribute(m, string(k), v)
+    end
+    vtxs = vertices(g)
 
-	source_nodes = [v for v in vtxs if v in source_nodes || node_demand[v] < 0]
-	sink_nodes = [v for v in vtxs if v in sink_nodes || node_demand[v] > 0]
+    source_nodes = [v for v in vtxs if v in source_nodes || node_demand[v] < 0]
+    sink_nodes = [v for v in vtxs if v in sink_nodes || node_demand[v] > 0]
 
-	@variable(m, 0 <= f[i=vtxs,j=vtxs; (i,j) in lg.edges(g)] <= edge_capacity[i, j])
-	@objective(m, Min, sum(f[src(e),dst(e)] * edge_cost[src(e), dst(e)] for e in lg.edges(g)))
+    @variable(m, 0 <= f[i=vtxs,j=vtxs; (i,j) in lg.edges(g)] <= edge_capacity[i, j])
+    @objective(m, Min, sum(f[src(e),dst(e)] * edge_cost[src(e), dst(e)] for e in lg.edges(g)))
 
-	for v in lg.vertices(g)
-	    if v in source_nodes
+    for v in lg.vertices(g)
+        if v in source_nodes
             @constraint(m,
                 sum(f[v, vout] for vout in outneighbors(g, v)) - sum(f[vin, v] for vin in lg.inneighbors(g, v)) >= -node_demand[v]
             )
-	    elseif v in sink_nodes
+        elseif v in sink_nodes
             @constraint(m,
                 sum(f[vin, v] for vin in lg.inneighbors(g, v)) - sum(f[v, vout] for vout in outneighbors(g, v)) >= node_demand[v]
             )
-	    else
+        else
             @constraint(m,
                 sum(f[vin, v] for vin in lg.inneighbors(g, v)) == sum(f[v, vout] for vout in outneighbors(g, v))
             )
