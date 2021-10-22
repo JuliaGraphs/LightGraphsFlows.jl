@@ -169,7 +169,6 @@ function relabel! end
     nothing
 end
 
-
 """
     discharge!(residual_graph, v, capacity_matrix, flow_matrix, excess, height, active, count, Q)
 
@@ -189,11 +188,11 @@ function discharge! end
         Q::AbstractVector                   # FIFO queue
     )
     for to in lg.outneighbors(residual_graph, v)
-        excess[v] == 0 && break
+        is_zero(excess[v]) && break
         push_flow!(residual_graph, v, to, capacity_matrix, flow_matrix, excess, height, active, Q)
     end
 
-    if excess[v] > 0
+    if excess[v] ≉ zero(excess[v])
         if count[height[v] + 1] == 1
             gap!(residual_graph, height[v], excess, height, active, count, Q)
         else
