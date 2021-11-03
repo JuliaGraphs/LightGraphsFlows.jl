@@ -53,5 +53,46 @@
                 @test maximum_flow(g, s, t, capacity_matrix, algorithm=ALGO(), restriction=caprestrict)[1] == frestrict
             end
         end
+
+        # Test specialization for weighted, where capacity is stored in edge weights
+        weighted_flow_graph = swg.SimpleWeightedDiGraph(nvertices)
+        for e in flow_edges
+            u, v, f = e
+            swg.add_edge!(weighted_flow_graph, u, v, f)
+        end
+
+        # Test all algorithms - type instability in PushRelabel #553
+        for ALGO in [EdmondsKarpAlgorithm, DinicAlgorithm, BoykovKolmogorovAlgorithm, PushRelabelAlgorithm]
+            @test maximum_flow(
+                weighted_flow_graph,
+                s,
+                t,
+                algorithm=ALGO(),
+                use_weights_as_capacity=true
+            )[1] == fcustom
+            @test maximum_flow(
+                weighted_flow_graph,
+                s,
+                t,
+                algorithm=ALGO(),
+                use_weights_as_capacity=false
+            )[1] != fcustom
+            @test maximum_flow(
+                weighted_flow_graph,
+                s,
+                t,
+                algorithm=ALGO(),
+                restriction=caprestrict,
+                use_weights_as_capacity=true
+            )[1] == frestrict
+            @test maximum_flow(
+                weighted_flow_graph,
+                s,
+                t,
+                algorithm=ALGO(),
+                restriction=caprestrict,
+                use_weights_as_capacity=false
+            )[1] != frestrict
+        end
     end
 end
